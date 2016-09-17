@@ -79,9 +79,9 @@ public class Payment {
 	
 	private void outputResults(float payment) {
 		System.out.println(String.format(MESSAGE_CUSTOMER, 
-				targetCustomer.getString("c_w_id"),
-				targetCustomer.getString("c_d_id"),
-				targetCustomer.getString("c_id"),
+				targetCustomer.getInt("c_w_id"),
+				targetCustomer.getInt("c_d_id"),
+				targetCustomer.getInt("c_id"),
 				
 				targetCustomer.getString("c_first"),
 				targetCustomer.getString("c_middle"),
@@ -97,9 +97,9 @@ public class Payment {
 				targetCustomer.getString("c_since"),
 				
 				targetCustomer.getString("c_credit"),
-				targetCustomer.getString("c_credit_lim"),
-				targetCustomer.getString("c_discount"),
-				targetCustomer.getString("c_balance")));
+				targetCustomer.getFloat("c_credit_lim"),
+				targetCustomer.getFloat("c_discount"),
+				targetCustomer.getFloat("c_balance")));
 		
 		System.out.println(String.format(MESSAGE_WAREHOUSE, 
 				targetWarehouse.getString("w_street_1"),
