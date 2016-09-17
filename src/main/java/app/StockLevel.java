@@ -1,4 +1,4 @@
-/* Name: Lin Jiahao
+/* Author: Lin Jiahao
  * ID: A0108235M
  * Team: 3
  */
