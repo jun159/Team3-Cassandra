@@ -201,15 +201,15 @@ public class NewOrder {
 		
 		o_entry_id = new Date();
 		int o_id = targetDistrict.getInt("d_next_o_id") - 1;
-        int o_all_local = 1;
-        
-        for (int id : supplier_warehouse) {
-            if (w_id != id) {
-            	o_all_local = 0;
-                break;
-            }
-        }
-        
+		int o_all_local = 1;
+		
+		for (int id : supplier_warehouse) {
+			if (w_id != id) {
+				o_all_local = 0;
+				break;
+			}
+		}
+		
 		session.execute(orderInsert.bind(w_id, d_id, o_id, c_id, null,
 				num_items, o_all_local, o_entry_id));
 	}
