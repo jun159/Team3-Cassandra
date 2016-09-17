@@ -12,19 +12,38 @@ import com.datastax.driver.core.*;
 public class StockLevel {
 	private static final String MESSAGE_ITEM_BELOW_THRESHOLD = "Total number of item below threshold (%d) : %d";
 	private static final String DISTRICT_NEXT_AVAILABLE_O_ID = 
-			  "SELECT d_next_o_id"
+			  "SELECT d_next_o_id "
 			+ "FROM district"
-			+ "WHERE d_w_id = ? and d_id = ?"
-			+ "ORDER BY d_next_o_id DESC"
+			+ "WHERE d_w_id = ? and d_id = ? "
+			+ "ORDER BY d_next_o_id DESC "
 			+ "LIMIT 1;";
+	private static final String ITEMS_IN_LAST_ORDER = 
+			  "SELECT ol_i_id"
+			+ "FROM orderline"
+			+ "WHERE ol_d_id = ? "
+			+ "and ol_w_id = ? "
+			
+			+ "and ol_o_id < ?;";
+	private static final String COUNT_ITEM_BELOW_THRESHOLD = 
+			  "SELECT COUNT(*)"
+			+ "FROM stock"
+			+ "WHERE s_w_id = ? "
+			+ "and s_i_id = ? "
+			+ "and s_quantity < ?;";
 	
 	private Session session;
 	private PreparedStatement nextAvailableOrderNum_Select;
+	private PreparedStatement itemsInLastOrder_Select;
+	private PreparedStatement countBelowThreshold_Select;
 	private Row targetDistrict;
+	private Row targetItemID;
+	private Row targetStock;
 	
 	public StockLevel(CassandraConnect connect) {
 		this.session = connect.getSession();
 		this.nextAvailableOrderNum_Select = session.prepare(DISTRICT_NEXT_AVAILABLE_O_ID);
+		this.itemsInLastOrder_Select = session.prepare(ITEMS_IN_LAST_ORDER);
+		this.countBelowThreshold_Select = session.prepare(COUNT_ITEM_BELOW_THRESHOLD);
 	}
 	
 	//====================================================================================
@@ -33,7 +52,7 @@ public class StockLevel {
 	
 	public void processStockLevel(int w_id, int d_id, int stockThreshold, int numOfLastOrder) {
 		int nextAvailableOrderID = getNextAvailableOrderNum(w_id, d_id);
-		int numOfItemBelowThreshold = countItemBelowThreshold(nextAvailableOrderID);
+		int numOfItemBelowThreshold = countItemBelowThreshold(d_id, w_id, nextAvailableOrderID, numOfLastOrder, stockThreshold);
 		printTotalNumBelowThreshold(stockThreshold, numOfItemBelowThreshold);
 	}
 		
@@ -56,8 +75,30 @@ public class StockLevel {
 	//=====================================================================================
 	// CQL: Retrieve set of items from last L orders for district (W ID,D ID)
 	//=====================================================================================
-	public int countItemBelowThreshold(int nextAvailableOrderID) {
+	public int countItemBelowThreshold(int d_id, int w_id, int nextAvailableOrderID, int numOfLastOrder, int stockThreshold) {
 		int countBelowThreshold = 0;
+		int startingOrderID = nextAvailableOrderID - numOfLastOrder;
+		
+		ResultSet resultSet = session.execute(itemsInLastOrder_Select.bind(d_id, w_id, startingOrderID, nextAvailableOrderID));
+		List<Row> items = resultSet.all();
+		
+		if(!items.isEmpty()) {
+			int ol_i_id;
+			
+			for(int i = 0; i < items.size(); i++) {
+				targetItemID = items.get(i);
+				ol_i_id = targetItemID.getInt("ol_i_id");
+				
+				resultSet = session.execute(countBelowThreshold_Select.bind(w_id, ol_i_id, stockThreshold));
+				List<Row> stock = resultSet.all();	
+				
+				if(!stock.isEmpty()) {
+					targetStock = stock.get(0);
+					countBelowThreshold += targetStock.getInt("count");
+				}
+			}
+		}
+		
 		return countBelowThreshold;
 	}
 	
