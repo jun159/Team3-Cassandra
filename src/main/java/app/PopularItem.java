@@ -35,14 +35,14 @@ public class PopularItem {
 	//====================================================================================
 	private static final String DISTRICT_NEXT_AVAILABLE_O_ID = 
 			          "SELECT d_next_o_id "
-					+ "FROM district"
+					+ "FROM district "
 					+ "WHERE d_w_id = ? and d_id = ? "
 					+ "ORDER BY d_next_o_id DESC "
 					+ "LIMIT 1;";
 	
 	private static final String ITEMS_IN_LAST_ORDER = 
 			          "SELECT ol_i_id"
-					+ "FROM order"
+					+ "FROM order "
 					+ "WHERE o_d_id = ? "
 					+ "and o_w_id = ? "
 					+ "and o_id >= ?"
@@ -50,7 +50,7 @@ public class PopularItem {
 	
 	private static final String ORDERLINE_FOR_AN_ORDER = 
 					  "SELECT *"
-					+ "FROM orderline"
+					+ "FROM orderline "
 					+ "WHERE ol_o_id = ? "
 					+ "and o_d_id = ? "
 					+ "and o_w_id >= ?"
@@ -58,13 +58,13 @@ public class PopularItem {
 	
 	private static final String CUSTOMER_NAME = 
 			          "SELECT c_first, c_middle, c_last"
-					+ "FROM customer"
+					+ "FROM customer "
 					+ "WHERE c_w_id = ? "
 					+ "and c_d_id = ? "
 					+ "and c_id >= ?;";
 	
 	private static final String ITEM_NAME = 
-			          "SELECT i_name"
+			          "SELECT i_name "
 					+ "FROM item"
 					+ "WHERE i_id = ?;";
 	

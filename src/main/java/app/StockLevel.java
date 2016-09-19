@@ -18,20 +18,20 @@ public class StockLevel {
 	//====================================================================================
 	private static final String DISTRICT_NEXT_AVAILABLE_O_ID = 
 					  "SELECT d_next_o_id "
-					+ "FROM district"
+					+ "FROM district "
 					+ "WHERE d_w_id = ? and d_id = ? "
 					+ "ORDER BY d_next_o_id DESC "
 					+ "LIMIT 1;";
 	private static final String ITEMS_IN_LAST_ORDER = 
-			          "SELECT ol_i_id"
-					+ "FROM orderline"
+			          "SELECT ol_i_id "
+					+ "FROM orderline "
 					+ "WHERE ol_d_id = ? "
 					+ "and ol_w_id = ? "
 					+ "and ol_o_id >= ?"
 					+ "and ol_o_id < ?;";
 	private static final String COUNT_ITEM_BELOW_THRESHOLD = 
-			          "SELECT COUNT(*)"
-					+ "FROM stock"
+			          "SELECT COUNT(*) "
+					+ "FROM stock "
 					+ "WHERE s_w_id = ? "
 					+ "and s_i_id = ? "
 					+ "and s_quantity < ?;";
