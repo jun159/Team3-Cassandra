@@ -19,16 +19,15 @@ public class StockLevel {
 	private static final String DISTRICT_NEXT_AVAILABLE_O_ID = 
 					  "SELECT d_next_o_id "
 					+ "FROM district "
-					+ "WHERE d_w_id = ? and d_id = ? "
-					+ "ORDER BY d_next_o_id DESC "
-					+ "LIMIT 1;";
+					+ "WHERE d_w_id = ? and d_id = ?;";
+	
 	private static final String ITEMS_IN_LAST_ORDER = 
 			          "SELECT ol_i_id "
 					+ "FROM orderline "
-					+ "WHERE ol_d_id = ? "
-					+ "and ol_w_id = ? "
-					+ "and ol_o_id >= ? "
-					+ "and ol_o_id < ?;";
+					+ "WHERE ol_w_id = ? "
+					+ "and ol_d_id = ? "
+					+ "and ol_o_id >= ?;";
+	
 	private static final String COUNT_ITEM_BELOW_THRESHOLD = 
 			          "SELECT COUNT(*) "
 					+ "FROM stock "
@@ -88,7 +87,7 @@ public class StockLevel {
 		int countBelowThreshold = 0;
 		int startingOrderID = nextAvailableOrderID - numOfLastOrder;
 
-		ResultSet resultSet = session.execute(itemsInLastOrder_Select.bind(d_id, w_id, startingOrderID, nextAvailableOrderID));
+		ResultSet resultSet = session.execute(itemsInLastOrder_Select.bind(w_id, d_id, startingOrderID));
 		List<Row> items = resultSet.all();
 
 		if(!items.isEmpty()) {
