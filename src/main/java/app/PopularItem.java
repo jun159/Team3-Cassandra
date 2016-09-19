@@ -39,9 +39,9 @@ public class PopularItem {
 					+ "WHERE d_w_id = ? and d_id = ? "
 					+ "LIMIT 1;";
 	
-	private static final String ITEMS_IN_LAST_ORDER = 
-			          "SELECT ol_i_id "
-					+ "FROM order;";
+	private static final String LAST_ORDER = 
+			          "SELECT o_id "
+					+ "FROM orders;";
 	
 	private static final String ORDERLINE_FOR_AN_ORDER = 
 					  "SELECT *"
@@ -65,7 +65,7 @@ public class PopularItem {
 
 	private Session session;
 	private PreparedStatement nextOrderNum_Select;
-	private PreparedStatement itemsInLastOrder_Select;
+	private PreparedStatement lastOrder_Select;
 	private PreparedStatement orderLine_Select;
 	private PreparedStatement customerName_Select;
 	private PreparedStatement itemName_Select;
@@ -78,7 +78,7 @@ public class PopularItem {
 	public PopularItem(CassandraConnect connect) {
 		this.session = connect.getSession();
 		this.nextOrderNum_Select = session.prepare(DISTRICT_NEXT_AVAILABLE_O_ID);
-		this.itemsInLastOrder_Select = session.prepare(ITEMS_IN_LAST_ORDER);
+		this.lastOrder_Select = session.prepare(LAST_ORDER);
 		this.orderLine_Select = session.prepare(ORDERLINE_FOR_AN_ORDER);
 		this.customerName_Select = session.prepare(CUSTOMER_NAME);
 		this.itemName_Select = session.prepare(ITEM_NAME);
@@ -152,7 +152,7 @@ public class PopularItem {
 	public List<Row> getLastOrder(int d_id, int w_id, int nextOrderID, int numOfLastOrder) {
 		int startingOrderID = nextOrderID - numOfLastOrder;
 
-		ResultSet resultSet = session.execute(itemsInLastOrder_Select.bind(d_id, w_id, startingOrderID, nextOrderID));
+		ResultSet resultSet = session.execute(lastOrder_Select.bind(d_id, w_id, startingOrderID, nextOrderID));
 		List<Row> items = resultSet.all();
 		
 		if(!items.isEmpty()) {
