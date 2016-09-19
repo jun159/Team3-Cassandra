@@ -1,5 +1,4 @@
-copy team3.warehouse (
-	W_ID,
+copy team3.warehouse (W_ID,
 	W_NAME,
 	W_STREET_1,
 	W_STREET_2,
@@ -10,8 +9,7 @@ copy team3.warehouse (
 	W_YTD) 
 from 'warehouse.csv';
 
-copy team3.district (
-	D_W_ID,
+copy team3.district (D_W_ID,
 	D_ID,
 	D_NAME,
 	D_STREET_1,
@@ -24,8 +22,7 @@ copy team3.district (
 	D_NEXT_O_ID)
 from 'district.csv';
 
-copy team3.customer (
-	C_W_ID, 
+copy team3.customer (C_W_ID, 
 	C_D_ID, 
 	C_ID, 
 	C_FIRST, 
@@ -48,8 +45,7 @@ copy team3.customer (
 	C_DATA) 
 from 'customer.csv';
 
-copy team3.order (
-	O_W_ID,
+copy team3.order (O_W_ID,
 	O_D_ID,
 	O_ID,
 	O_C_ID,
@@ -59,16 +55,14 @@ copy team3.order (
 	O_ENTRY_D)
 from 'order.csv';
 
-copy team3.item (
-	I_ID,
+copy team3.item (I_ID,
 	I_NAME,
 	I_PRICE,
 	I_IM_ID,
 	I_DATA)
 from 'item.csv';
 
-copy team3.orderline (
-	ol_w_id, 
+copy team3.orderline (ol_w_id, 
 	ol_d_id, 
 	ol_o_id, 
 	ol_number, 
@@ -80,8 +74,7 @@ copy team3.orderline (
 	ol_dist_info) 
 from 'order-line.csv';
 
-copy team3.stock (
-	S_W_ID,
+copy team3.stock (S_W_ID,
 	S_I_ID,
 	S_QUANTITY,
 	S_YTD,
