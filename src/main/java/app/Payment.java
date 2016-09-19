@@ -5,6 +5,7 @@
 
 package app;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.datastax.driver.core.*;
@@ -26,7 +27,7 @@ public class Payment {
 			+ "FROM district "
 			+ "WHERE d_w_id = ? AND d_id = ?;";
 	private static final String SELECT_CUSTOMER = 
-			"SELECT c_first, c_middle, c_last, c_street_1, c_street_2, "
+			"SELECT c_w_id, c_d_id, c_id, c_first, c_middle, c_last, c_street_1, c_street_2, "
 			+ "c_city, c_state, c_zip, c_phone, c_since, c_credit, c_credit_lim, "
 			+ "c_discount, c_balance, c_ytd_payment, c_payment_cnt "
 			+ "FROM customer "
@@ -94,12 +95,12 @@ public class Payment {
 				targetCustomer.getString("c_zip"),
 				
 				targetCustomer.getString("c_phone"),
-				targetCustomer.getString("c_since"),
+				targetCustomer.getTimestamp("c_since"),
 				
 				targetCustomer.getString("c_credit"),
-				targetCustomer.getFloat("c_credit_lim"),
-				targetCustomer.getFloat("c_discount"),
-				targetCustomer.getFloat("c_balance")));
+				targetCustomer.getDecimal("c_credit_lim"),
+				targetCustomer.getDecimal("c_discount"),
+				targetCustomer.getDecimal("c_balance")));
 		
 		System.out.println(String.format(MESSAGE_WAREHOUSE, 
 				targetWarehouse.getString("w_street_1"),
@@ -147,18 +148,18 @@ public class Payment {
 	}
 	
 	private void updateWarehouse(final int w_id, final float payment) {
-		float w_ytd = targetWarehouse.getFloat("w_ytd") + payment;
+		BigDecimal w_ytd = targetWarehouse.getDecimal("w_ytd").add(BigDecimal.valueOf(payment));
 		session.execute(warehouseUpdate.bind(w_ytd, w_id));
 	}
 	
 	private void updateDistrict(final int w_id, final int d_id, final float payment) {
-		float d_ytd = targetDistrict.getFloat("d_ytd") + payment;
+		BigDecimal d_ytd = targetDistrict.getDecimal("d_ytd").add(BigDecimal.valueOf(payment));
 		session.execute(districtUpdate.bind(d_ytd, w_id, d_id));
 	}
 	
 	private void updateCustomer(final int w_id, final int d_id, 
 			final int c_id, final float payment) {		
-		float c_balance = targetCustomer.getFloat("c_balance") - payment;
+		BigDecimal c_balance = targetCustomer.getDecimal("c_balance").subtract(BigDecimal.valueOf(payment));
 		float c_ytd_payment = targetCustomer.getFloat("c_ytd_payment") + payment;
 		int c_payment_cnt = targetCustomer.getInt("c_payment_cnt") + 1;
 		session.execute(customerUpdate.bind(c_balance, c_ytd_payment, c_payment_cnt, w_id, d_id, c_id));

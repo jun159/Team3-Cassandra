@@ -42,8 +42,8 @@ public class MainDriver {
 		this.paymentXact = new Payment(connect);
 //		this.deliveryXact = new Delivery(connect);
 //		this.orderStatusXact = new OrderStatus(connect);
-		this.stockLevelXact = new StockLevel(connect);
-		this.popularItemXact = new PopularItem(connect);
+//		this.stockLevelXact = new StockLevel(connect);
+//		this.popularItemXact = new PopularItem(connect);
 //		this.topBalanceXact = new TopBalance(connect);
 		this.database = database;
 		this.xactID = xactID;
@@ -76,12 +76,12 @@ public class MainDriver {
 //		            case XACT_ORDERSTATUS:
 //		               	runOrderStatusXact(args);
 //		               	break;
-		            case XACT_STOCKLEVEL:
-		               	runStockLevelXact(args);
-		               	break;
-		            case XACT_POPULARITEM:
-		               	runPopularItemXact(args);
-		               	break;
+//		            case XACT_STOCKLEVEL:
+//		               	runStockLevelXact(args);
+//		               	break;
+//		            case XACT_POPULARITEM:
+//		               	runPopularItemXact(args);
+//		               	break;
 //		            case XACT_TOPBALANCE:
 //		                	runTopBalanceXact(args);
 //		                	break;
