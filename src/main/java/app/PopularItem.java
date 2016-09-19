@@ -41,11 +41,11 @@ public class PopularItem {
 					+ "LIMIT 1;";
 	
 	private static final String ITEMS_IN_LAST_ORDER = 
-			          "SELECT ol_i_id"
+			          "SELECT ol_i_id "
 					+ "FROM order "
 					+ "WHERE o_d_id = ? "
 					+ "and o_w_id = ? "
-					+ "and o_id >= ?"
+					+ "and o_id >= ? "
 					+ "and o_id < ?;";
 	
 	private static final String ORDERLINE_FOR_AN_ORDER = 
@@ -53,11 +53,11 @@ public class PopularItem {
 					+ "FROM orderline "
 					+ "WHERE ol_o_id = ? "
 					+ "and o_d_id = ? "
-					+ "and o_w_id >= ?"
+					+ "and o_w_id >= ? "
 					+ "ORDER BY ol_quantity DESC;";
 	
 	private static final String CUSTOMER_NAME = 
-			          "SELECT c_first, c_middle, c_last"
+			          "SELECT c_first, c_middle, c_last "
 					+ "FROM customer "
 					+ "WHERE c_w_id = ? "
 					+ "and c_d_id = ? "

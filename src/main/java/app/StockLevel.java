@@ -27,7 +27,7 @@ public class StockLevel {
 					+ "FROM orderline "
 					+ "WHERE ol_d_id = ? "
 					+ "and ol_w_id = ? "
-					+ "and ol_o_id >= ?"
+					+ "and ol_o_id >= ? "
 					+ "and ol_o_id < ?;";
 	private static final String COUNT_ITEM_BELOW_THRESHOLD = 
 			          "SELECT COUNT(*) "
