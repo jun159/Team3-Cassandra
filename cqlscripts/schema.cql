@@ -30,7 +30,7 @@ CREATE TABLE District (
 	D_TAX decimal,
 	D_YTD decimal,
 	D_NEXT_O_ID int,
-	PRIMARY KEY ((D_W_ID, D_ID))
+	PRIMARY KEY ((D_W_ID), D_ID)
 );
 
 CREATE TABLE Customer (
@@ -55,7 +55,7 @@ CREATE TABLE Customer (
 	C_PAYMENT_CNT int,
 	C_DELIVERY_CNT int,
 	C_DATA varchar,
-	PRIMARY KEY((C_W_ID, C_D_ID, C_ID)) 
+	PRIMARY KEY((C_W_ID, C_D_ID), C_ID) 
 );
 
 CREATE TABLE Orders (
@@ -111,5 +111,5 @@ CREATE TABLE Stock (
 	S_DIST_09 varchar,
 	S_DIST_10 varchar,
 	S_DATA varchar,
-	PRIMARY KEY ((S_W_ID, S_I_ID))
+	PRIMARY KEY ((S_W_ID), S_I_ID)
 );
