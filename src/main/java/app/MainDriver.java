@@ -42,8 +42,8 @@ public class MainDriver {
 		this.paymentXact = new Payment(connect);
 //		this.deliveryXact = new Delivery(connect);
 //		this.orderStatusXact = new OrderStatus(connect);
-//		this.stockLevelXact = new StockLevel(connect);
-//		this.popularItemXact = new PopularItem(connect);
+		this.stockLevelXact = new StockLevel(connect);
+		this.popularItemXact = new PopularItem(connect);
 //		this.topBalanceXact = new TopBalance(connect);
 		this.database = database;
 		this.xactID = xactID;
@@ -67,21 +67,21 @@ public class MainDriver {
 					case XACT_NEWORDER:
 						runNewOrderXact(args, br);
 						break;
-//		            case XACT_PAYMENT:
-//		               	runPaymentXact(args);
-//		                break;
+		            case XACT_PAYMENT:
+		               	runPaymentXact(args);
+		                break;
 //		            case XACT_DELIVERY:
 //		                runDeliveryXact(args);
 //		                break;
 //		            case XACT_ORDERSTATUS:
 //		               	runOrderStatusXact(args);
 //		               	break;
-//		            case XACT_STOCKLEVEL:
-//		               	runStockLevelXact(args);
-//		               	break;
-//		            case XACT_POPULARITEM:
-//		               	runPopularItemXact(args);
-//		               	break;
+		            case XACT_STOCKLEVEL:
+		               	runStockLevelXact(args);
+		               	break;
+		            case XACT_POPULARITEM:
+		               	runPopularItemXact(args);
+		               	break;
 //		            case XACT_TOPBALANCE:
 //		                	runTopBalanceXact(args);
 //		                	break;
@@ -186,10 +186,10 @@ public class MainDriver {
 //			System.err.println(MESSAGE_ERROR_ARGS);
 //		}
 
-		System.out.print("Enter database: ");
-		System.out.print("Enter file number: ");
 		Scanner sc = new Scanner(System.in);
+		System.out.print("Enter database: ");	
 		String data = sc.nextLine();
+		System.out.print("Enter file number: ");
 		String fileNum = sc.nextLine();
 		sc.close();
 		MainDriver mainDriver = new MainDriver(data, fileNum);
