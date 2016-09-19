@@ -11,10 +11,10 @@ import com.datastax.driver.core.*;
 
 public class Payment {
 	
-	private static final String MESSAGE_WAREHOUSE = "Warehouse address: Street(%1$s %1$s) City(%1$s) State(%1$s) Zip(%1$s)";
-	private static final String MESSAGE_DISTRICT = "District address: Street(%1$s %1$s) City(%1$s) State(%1$s) Zip(%1$s)";
-	private static final String MESSAGE_CUSTOMER = "Customer information: ID(%1$s, %1$s, %1$s), Name(%1$s, %1$s, %1$s), "
-			+ "Address(%1$s, %1$s, %1$s, %1$s, %1$s), Phone(%1$s), Since(%1$s), Credits(%1$s, %1$s, %1$s, %1$s)";
+	private static final String MESSAGE_WAREHOUSE = "Warehouse address: Street(%1$s %2$s) City(%3$s) State(%4$s) Zip(%5$s)";
+	private static final String MESSAGE_DISTRICT = "District address: Street(%1$s %2$s) City(%3$s) State(%4$s) Zip(%5$s)";
+	private static final String MESSAGE_CUSTOMER = "Customer information: ID(%1$s, %2$s, %3$s), Name(%4$s, %5$s, %6$s), "
+			+ "Address(%7$s, %8$s, %9$s, %10$s, %11$s), Phone(%12$s), Since(%13$s), Credits(%14$s, %15$s, %16$s, %17$s)";
 	private static final String MESSAGE_PAYMENT = "Payment amount: %1$s";
 	
 	private static final String SELECT_WAREHOUSE = 

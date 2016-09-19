@@ -12,15 +12,15 @@ import com.datastax.driver.core.*;
 
 public class NewOrder {
 	
-	private static final String MESSAGE_CUSTOMER = "Customer information: ID(%1$s, %1$s, %1$s), LastName(%1$s), "
-			+ "Credit(%1$s), Discount(%1$s)";
+	private static final String MESSAGE_CUSTOMER = "Customer information: ID(%1$s, %2$s, %3$s), LastName(%4$s), "
+			+ "Credit(%5$s), Discount(%6$s)";
 	private static final String MESSAGE_WAREHOUSE = "Warehouse tax rate: %1$s";
 	private static final String MESSAGE_DISTRICT = "District tax rate: %1$s";
-	private static final String MESSAGE_ORDER = "Order: OrderNumber(%1$s), EntryDate(%1$s)";
+	private static final String MESSAGE_ORDER = "Order: OrderNumber(%1$s), EntryDate(%2$s)";
 	private static final String MESSAGE_NUM_ITEMS = "Number of items: %1$s";
 	private static final String MESSAGE_TOTAL_AMOUNT = "Total amount: %1$s";
-	private static final String MESSAGE_ORDER_ITEM = "Order item: ItemNumber(%1$s), ItemName(%1$s), "
-			+ "Warehouse(%1$s), Quantity(%1$s), Amount(%1$s), TotalQuantity(%1$s)";
+	private static final String MESSAGE_ORDER_ITEM = "Order item: ItemNumber(%1$s), ItemName(%2$s), "
+			+ "Warehouse(%3$s), Quantity(%4$s), Amount(%5$s), TotalQuantity(%6$s)";
 	
 	private static final String SELECT_WAREHOUSE = 
 			"SELECT w_tax "
@@ -29,34 +29,34 @@ public class NewOrder {
 	private static final String SELECT_DISTRICT =
 			"SELECT d_next_o_id, d_tax "
 			+ "FROM district "
-			+ "WHERE w_id = ? "
+			+ "WHERE d_w_id = ? "
 			+ "AND d_id = ?";
 	private static final String UPDATE_DISTRICT =
 			"UPDATE district SET d_next_o_id = ? "
-			+ "WHERE w_id = ? AND d_id = ?";
+			+ "WHERE d_w_id = ? AND d_id = ?";
 	private static final String SELECT_STOCK =
-			"SELECT s_quantity, s_ytd, s_order_cnt, s_remote_cnt, s_dist_? "
+			"SELECT s_quantity, s_ytd, s_order_cnt, s_remote_cnt, s_dist_%1$s "
 			+ "FROM stock "
-			+ "WHERE w_id = ? AND i_id = ?";
+			+ "WHERE s_w_id = ? AND s_i_id = ?";
 	private static final String UPDATE_STOCK = 
 			"UPDATE stock "
 			+ "SET s_quantity = ?, s_ytd = ?, s_order_cnt = ?, s_remote_cnt = ? "
-			+ "WHERE w_id = ? AND i_id = ?";
+			+ "WHERE s_w_id = ? AND s_i_id = ?";
 	private static final String SELECT_ITEM =
-			"SELECT i_price, i_name"
+			"SELECT i_price, i_name "
 			+ "FROM item "
 			+ "WHERE i_id = ?";
 	private static final String SELECT_CUSTOMER =
 			"SELECT c_last, c_credit, c_discount "
 			+ "FROM customer "
-			+ "WHERE w_id = ? AND d_id = ? AND c_id = ?";
+			+ "WHERE c_w_id = ? AND c_d_id = ? AND c_id = ?";
 	private static final String INSERT_ORDER =
 			"INSERT INTO orders (o_w_id, o_d_id, o_id, o_c_id, o_carrier_id, "
 			+ "o_ol_cnt, o_all_local, o_entry_d) "
-			+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
+			+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 	private static final String INSERT_ORDERLINE = 
 			"INSERT INTO orderline (ol_w_id, ol_d_id, ol_o_id, ol_number, ol_i_id,"
-			+ "ol_delivery_id, ol_amount, ol_supply_w_id, ol_quantity, ol_dist_info) "
+			+ "ol_delivery_d, ol_amount, ol_supply_w_id, ol_quantity, ol_dist_info) "
 			+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 	
 	private PreparedStatement warehouseSelect;
@@ -83,7 +83,6 @@ public class NewOrder {
 		this.districtSelect = session.prepare(SELECT_DISTRICT);
 		this.districtUpdate = session.prepare(UPDATE_DISTRICT);
 		this.customerSelect = session.prepare(SELECT_CUSTOMER);
-		this.stockSelect = session.prepare(SELECT_STOCK);
 		this.stockUpdate = session.prepare(UPDATE_STOCK);
 		this.itemSelect = session.prepare(SELECT_ITEM);
 		this.orderInsert = session.prepare(INSERT_ORDER);
@@ -171,7 +170,8 @@ public class NewOrder {
 	}
 	
 	private void selectStock(final int w_id, final int d_id, final int i_id, final int warehouse, final int quantity) {	
-		ResultSet resultSet = session.execute(stockSelect.bind(d_id, w_id, i_id));
+		this.stockSelect = session.prepare(String.format(SELECT_STOCK, d_id));
+		ResultSet resultSet = session.execute(stockSelect.bind(w_id, i_id));
 		List<Row> stocks = resultSet.all();
 		
 		if(!stocks.isEmpty()) {
