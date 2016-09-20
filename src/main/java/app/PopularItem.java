@@ -5,6 +5,7 @@
 
 package app;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class PopularItem {
 	
 	private static final String ITEM_NAME = 
 			          "SELECT i_name "
-					+ "FROM item"
+					+ "FROM item "
 					+ "WHERE i_id = ?;";
 	
 	//====================================================================================
@@ -200,14 +201,14 @@ public class PopularItem {
 		
 		// Find largest quantity in orderline (assuming it is arranged by database)
 		targetItem = setOfOrderline.get(0);
-		float max_ol_quantity = targetItem.getInt("ol_quantity");
+		BigDecimal max_ol_quantity = targetItem.getDecimal("ol_quantity");
 		int i_id;
 		String itemName;
 		
 		// Iterate through orderline to get all popular items
 		for(int i = 0; i < setOfOrderline.size(); i++) {
 			targetOrderline = setOfOrderline.get(i);
-			if(targetOrderline.getInt("ol_quantity") < max_ol_quantity){
+			if(targetOrderline.getDecimal("ol_quantity").compareTo(max_ol_quantity) == 1){
 				break;
 			}
 			
@@ -273,8 +274,8 @@ public class PopularItem {
 		System.out.println(String.format(MESSAGE_CUSTOMER_NAME, name));
 	}
 	
-	public void printPopularItem(String itemName, float ol_quantity) {
-		System.out.println(String.format(MESSAGE_POPULAR_ITEM, itemName, ol_quantity));
+	public void printPopularItem(String itemName, BigDecimal max_ol_quantity) {
+		System.out.println(String.format(MESSAGE_POPULAR_ITEM, itemName, max_ol_quantity));
 	}
 	
 	public void printPercentageOrder(String itemName, float percentage) {
