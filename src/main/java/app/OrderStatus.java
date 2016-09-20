@@ -1,5 +1,5 @@
 
-package soc.database;
+package app;
 
 import com.datastax.driver.core.*;
 
