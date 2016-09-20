@@ -85,7 +85,7 @@ CREATE TABLE OrderLine (
 	OL_O_ID int,
 	OL_NUMBER int,
 	OL_I_ID int,
-	OL_DELIVERY_D varchar,
+	OL_DELIVERY_D timestamp,
 	OL_AMOUNT decimal,
 	OL_SUPPLY_W_ID int,
 	OL_QUANTITY decimal,
