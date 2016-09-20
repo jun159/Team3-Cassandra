@@ -6,9 +6,12 @@
 package app;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import com.datastax.driver.core.LocalDate;
 import com.datastax.driver.core.PreparedStatement;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
@@ -22,10 +25,6 @@ public class PopularItem {
 	private static final String MESSAGE_CUSTOMER_NAME = "Customer Name : %s";
 	private static final String MESSAGE_POPULAR_ITEM = "Item name: %s, OL_Quantity = %2f";
 	private static final String MESSAGE_PERCENTAGE_OF_ORDER_CONTAINING_POPULAR_ITEM = "Item name: %s, %.2f percent of orders contains item.";
-
-	private int w_id;
-	private int d_id;
-	private int numOfLastOrder;
 	
 	// ArrayLists: (1) name of popular item (2) number of orders containing the item.
 	private ArrayList<String> nameOfPopularItem;
@@ -37,23 +36,28 @@ public class PopularItem {
 	private static final String DISTRICT_NEXT_AVAILABLE_O_ID = 
 			          "SELECT d_next_o_id "
 					+ "FROM district "
-					+ "WHERE d_w_id = ? and d_id = ? "
-					+ "LIMIT 1;";
+					+ "WHERE d_w_id = ? and d_id = ? ; ";
 	
-	private static final String LAST_ORDER = 
-			          "SELECT o_id "
-					+ "FROM orders;";
+	private static final String SELECT_LAST_ORDER = 
+					  "SELECT o_id, o_c_id, o_entry_d "
+					+ "FROM orders "
+					+ "WHERE o_d_id = ? "
+					+ "AND o_w_id = ? "
+					+ "AND o_id >= ? and o_id < ? ; ";
 	
 	private static final String ORDERLINE_FOR_AN_ORDER = 
 					  "SELECT *"
-					+ "FROM orderline;";
+					+ "FROM orderline "
+					+ "WHERE ol_o_id = ? "
+					+ "AND ol_d_id = ? "
+					+ "AND ol_w_id = ? ; ";
 	
 	private static final String CUSTOMER_NAME = 
 			          "SELECT c_first, c_middle, c_last "
 					+ "FROM customer "
 					+ "WHERE c_w_id = ? "
 					+ "and c_d_id = ? "
-					+ "and c_id >= ?;";
+					+ "and c_id >= ? ;";
 	
 	private static final String ITEM_NAME = 
 			          "SELECT i_name "
@@ -65,11 +69,13 @@ public class PopularItem {
 	//====================================================================================
 
 	private Session session;
-	private PreparedStatement nextOrderNum_Select;
-	private PreparedStatement lastOrder_Select;
+	
+	private PreparedStatement nextAvailableOrderNum_Select;
+	private PreparedStatement getLastOrder_Select;
 	private PreparedStatement orderLine_Select;
 	private PreparedStatement customerName_Select;
 	private PreparedStatement itemName_Select;
+	
 	private Row targetDistrict;
 	private Row targetOrder;
 	private Row targetOrderline;
@@ -78,8 +84,8 @@ public class PopularItem {
 
 	public PopularItem(CassandraConnect connect) {
 		this.session = connect.getSession();
-		this.nextOrderNum_Select = session.prepare(DISTRICT_NEXT_AVAILABLE_O_ID);
-		this.lastOrder_Select = session.prepare(LAST_ORDER);
+		this.nextAvailableOrderNum_Select = session.prepare(DISTRICT_NEXT_AVAILABLE_O_ID);
+		this.getLastOrder_Select = session.prepare(SELECT_LAST_ORDER);
 		this.orderLine_Select = session.prepare(ORDERLINE_FOR_AN_ORDER);
 		this.customerName_Select = session.prepare(CUSTOMER_NAME);
 		this.itemName_Select = session.prepare(ITEM_NAME);
@@ -90,34 +96,34 @@ public class PopularItem {
 	//====================================================================================
 
 	public void processPopularItem(int w_id, int d_id, int numOfLastOrder) {
-		this.w_id = w_id;
-		this.d_id = d_id;
-		numOfLastOrder = this.numOfLastOrder;
-		printMostPopularItem();
+
+		printDistrictIdentifierAndNumOfLastOrder(w_id, d_id, numOfLastOrder);
+		
 		int nextOrderID = getNextAvailableOrderNum(w_id, d_id);
+		
 		List<Row> setOfLastOrder = getLastOrder(d_id, w_id, nextOrderID, numOfLastOrder);
-		processOrderForPopularItem(setOfLastOrder);
+		processOrderForPopularItem(setOfLastOrder, w_id, d_id);
 	}
 	
-	public void processOrderForPopularItem(List<Row> setOfLastOrder) {
+	public void processOrderForPopularItem(List<Row> setOfLastOrder, int w_id, int d_id) {
 		int o_id, c_id;
-		String date_and_time;
+		Date date_and_time;
 		
 		// Processing an order
 		
-		for(int i = 0; i <setOfLastOrder.size(); i++) {
+		for(int i = 0; i < setOfLastOrder.size(); i++) {
 			
 			targetOrder =  setOfLastOrder.get(i);
 			o_id = targetOrder.getInt("o_id");
 			c_id = targetOrder.getInt("o_c_id");
-			date_and_time = targetOrder.getString("o_entry_d");
+			date_and_time = targetOrder.getTimestamp("o_entry_d");
 			
-			printOrderDetail(o_id, date_and_time);
+			printOrderDetail(o_id, date_and_time.toString());
 			printCustomerName(getCustomerName(w_id, d_id, c_id));
 			
 			// Get the orderlines of this order
 			List<Row> setOfOrderline = getOrderLine(o_id, d_id, w_id);
-			findPopularItem(setOfOrderline);
+			//findPopularItem(setOfOrderline);
 		}
 		
 		findPercentageOfOrder(setOfLastOrder.size());
@@ -136,7 +142,7 @@ public class PopularItem {
 	//====================================================================================
 	public int getNextAvailableOrderNum(int w_id, int d_id) {
 		int nextAvailableNum = 0;
-		ResultSet resultSet = session.execute(nextOrderNum_Select.bind(w_id, d_id));
+		ResultSet resultSet = session.execute(nextAvailableOrderNum_Select.bind(w_id, d_id));
 		List<Row> district = resultSet.all();
 
 		if(!district.isEmpty()) {
@@ -148,19 +154,16 @@ public class PopularItem {
 	}
 
 	//=====================================================================================
-	// CQL: Retrieve set of items from last L orders in Order table for district (W ID,D ID)
+	// CQL: Retrieve set of last L orders in Order table for district (W ID,D ID)
 	//=====================================================================================
-	public List<Row> getLastOrder(int d_id, int w_id, int nextOrderID, int numOfLastOrder) {
-		int startingOrderID = nextOrderID - numOfLastOrder;
-
-		ResultSet resultSet = session.execute(lastOrder_Select.bind(d_id, w_id, startingOrderID, nextOrderID));
+	private List<Row> getLastOrder(int d_id, int w_id, int nextAvailableOrderID, int numOfLastOrder) {
+		int startingOrderID = nextAvailableOrderID - numOfLastOrder;
+		
+		System.out.println("Finding all items from " + startingOrderID + " to " + nextAvailableOrderID +"......");
+		
+		ResultSet resultSet = session.execute(getLastOrder_Select.bind(d_id, w_id, startingOrderID, nextAvailableOrderID));
 		List<Row> items = resultSet.all();
-		
-		if(!items.isEmpty()) {
-			return items;
-		}
-		
-		return null;
+		return items;
 	}
 	
 	//=====================================================================================
@@ -170,13 +173,9 @@ public class PopularItem {
 		
 		ResultSet resultSet = session.execute(customerName_Select.bind(w_id, d_id, c_id));
 		List<Row> customer = resultSet.all();
+		targetCustomer = customer.get(0);
+		return targetCustomer.getString("c_first") + " " + targetCustomer.getString("c_middle") + " " + targetCustomer.getString("c_last");
 
-		if(!customer.isEmpty()) {
-			targetCustomer = customer.get(0);
-			return targetCustomer.getString("c_first") + targetCustomer.getString("c_middle") + targetCustomer.getString("c_last");
-		}
-
-		return null;
 	}
 	
 	//=====================================================================================
@@ -186,12 +185,8 @@ public class PopularItem {
 
 		ResultSet resultSet = session.execute(orderLine_Select.bind(o_id, d_id, w_id));
 		List<Row> orderline = resultSet.all();
-		
-		if(!orderline.isEmpty()) {
-			return orderline;
-		}
-		
-		return null;
+		return orderline;
+
 	}
 	
 	//=====================================================================================
@@ -261,7 +256,7 @@ public class PopularItem {
 	// For printing outputs
 	//=====================================================================================
 
-	public void printMostPopularItem() {
+	public void printDistrictIdentifierAndNumOfLastOrder(int w_id, int d_id, int numOfLastOrder) {
 		System.out.println(String.format(MESSAGE_DISTRICT_IDENTIFIER, w_id, d_id));
 		System.out.println(String.format(MESSAGE_NUM_LAST_ORDER, numOfLastOrder));
 	}
