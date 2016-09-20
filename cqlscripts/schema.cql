@@ -85,13 +85,15 @@ CREATE TABLE OrderLine (
 	OL_O_ID int,
 	OL_NUMBER int,
 	OL_I_ID int,
-	OL_DELIVERY_D timestamp,
+	OL_DELIVERY_D varchar,
 	OL_AMOUNT decimal,
 	OL_SUPPLY_W_ID int,
 	OL_QUANTITY decimal,
 	OL_DIST_INFO varchar,
-	PRIMARY KEY ((OL_W_ID, OL_D_ID, OL_O_ID), OL_NUMBER)
+	PRIMARY KEY ((OL_W_ID, OL_D_ID), OL_O_ID, OL_NUMBER)
 );
+
+CREATE INDEX ON OrderLine (OL_O_ID);
 
 CREATE TABLE Stock (
 	S_W_ID int,
