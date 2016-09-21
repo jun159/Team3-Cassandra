@@ -30,7 +30,7 @@ CREATE TABLE District (
 	D_TAX decimal,
 	D_YTD decimal,
 	D_NEXT_O_ID int,
-	PRIMARY KEY ((D_W_ID), D_ID)
+	PRIMARY KEY (D_W_ID, D_NEXT_O_ID, D_ID)
 );
 
 CREATE TABLE Customer (
@@ -94,6 +94,7 @@ CREATE TABLE OrderLine (
 );
 
 CREATE INDEX ON OrderLine (OL_O_ID);
+CREATE INDEX ON OrderLine (OL_QUANTITY);
 
 CREATE TABLE Stock (
 	S_W_ID int,
