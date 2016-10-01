@@ -106,14 +106,14 @@ public class MainDriver {
         int num_items = Integer.parseInt(args[4]);
         int[] item_number = new int[num_items];
         int[] supplier_warehouse = new int[num_items];
-        int[] quantity = new int[num_items];
+        double[] quantity = new double[num_items];
         
         try {
 	        for (int i = 0; i < num_items; i++) {
 	        	String[] items = br.readLine().split(",");
 	            item_number[i] = Integer.parseInt(items[0]);
 	            supplier_warehouse[i] = Integer.parseInt(items[1]);
-	            quantity[i] = Integer.parseInt(items[2]);
+	            quantity[i] = Double.parseDouble(items[2]);
 	        }
         } catch(IOException e) {
         	System.err.println(MESSAGE_ERROR_READ);
