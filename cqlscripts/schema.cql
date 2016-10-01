@@ -13,8 +13,8 @@ CREATE TABLE Warehouse (
 	W_CITY varchar,
 	W_STATE varchar,
 	W_ZIP varchar,
-	W_TAX decimal,
-	W_YTD decimal,
+	W_TAX double,
+	W_YTD double,
 	PRIMARY KEY (W_ID)
 );
 
@@ -27,10 +27,10 @@ CREATE TABLE District (
 	D_CITY varchar,
 	D_STATE varchar,
 	D_ZIP varchar,
-	D_TAX decimal,
-	D_YTD decimal,
+	D_TAX double,
+	D_YTD double,
 	D_NEXT_O_ID int,
-	PRIMARY KEY (D_W_ID, D_NEXT_O_ID, D_ID)
+	PRIMARY KEY (D_W_ID, D_ID)
 );
 
 CREATE TABLE Customer (
@@ -48,9 +48,9 @@ CREATE TABLE Customer (
 	C_PHONE varchar,
 	C_SINCE timestamp,
 	C_CREDIT varchar,
-	C_CREDIT_LIM decimal,
-	C_DISCOUNT decimal,
-	C_BALANCE decimal,
+	C_CREDIT_LIM double,
+	C_DISCOUNT double,
+	C_BALANCE double,
 	C_YTD_PAYMENT float,
 	C_PAYMENT_CNT int,
 	C_DELIVERY_CNT int,
@@ -64,8 +64,8 @@ CREATE TABLE Orders (
 	O_ID int,
 	O_C_ID int,
 	O_CARRIER_ID int,
-	O_OL_CNT decimal,
-	O_ALL_LOCAL decimal,
+	O_OL_CNT double,
+	O_ALL_LOCAL double,
 	O_ENTRY_D timestamp,
 	PRIMARY KEY ((O_W_ID, O_D_ID), O_ID)
 ) WITH CLUSTERING ORDER BY (O_ID DESC);
@@ -73,7 +73,7 @@ CREATE TABLE Orders (
 CREATE TABLE Item (
 	I_ID int,
 	I_NAME varchar,
-	I_PRICE decimal,
+	I_PRICE double,
 	I_IM_ID int,
 	I_DATA varchar,
 	PRIMARY KEY (I_ID)
@@ -86,9 +86,9 @@ CREATE TABLE OrderLine (
 	OL_NUMBER int,
 	OL_I_ID int,
 	OL_DELIVERY_D timestamp,
-	OL_AMOUNT decimal,
+	OL_AMOUNT double,
 	OL_SUPPLY_W_ID int,
-	OL_QUANTITY decimal,
+	OL_QUANTITY double,
 	OL_DIST_INFO varchar,
 	PRIMARY KEY ((OL_W_ID, OL_D_ID), OL_O_ID, OL_NUMBER)
 );
@@ -99,8 +99,8 @@ CREATE INDEX ON OrderLine (OL_QUANTITY);
 CREATE TABLE Stock (
 	S_W_ID int,
 	S_I_ID int,
-	S_QUANTITY decimal,
-	S_YTD decimal,
+	S_QUANTITY double,
+	S_YTD double,
 	S_ORDER_CNT int,
 	S_REMOTE_CNT int,
 	S_DIST_01 varchar,
