@@ -5,7 +5,6 @@
 
 package app;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -202,7 +201,7 @@ public class PopularItem {
 	public void findPopularItem(int o_id) {
 		
 		// Find max quantity in this set of orderline 
-		BigDecimal max_ol_quantity = getMaxOL_Quantity(o_id);
+		Double max_ol_quantity = getMaxOL_Quantity(o_id);
 		
 		// Get popular items (with max_ol_quantity) from orderline table
 		ResultSet resultSet = session.execute(selectPopularItemFromOrderLine.bind(o_id, max_ol_quantity));
@@ -221,7 +220,7 @@ public class PopularItem {
 		}
 	}
 
-	private BigDecimal getMaxOL_Quantity(int o_id) {
+	private Double getMaxOL_Quantity(int o_id) {
 		
 		// Get the max ol_quantity from the set of orderline in this order
 		ResultSet resultSet = session.execute(getMaxOrderlineQuantity.bind(o_id));
@@ -229,7 +228,7 @@ public class PopularItem {
 		
 		//Retrieve the max_ol_quantity
 		targetMax = maxOrderlineQuantity.get(0);
-		BigDecimal max_ol_quantity = targetMax.getDecimal("max_quantity");
+		Double max_ol_quantity = targetMax.getDouble("max_quantity");
 		
 		return max_ol_quantity;
 	}
@@ -287,7 +286,7 @@ public class PopularItem {
 		System.out.println(String.format(MESSAGE_CUSTOMER_NAME, name));
 	}
 	
-	public void printPopularItem(String itemName, BigDecimal max_ol_quantity) {
+	public void printPopularItem(String itemName, Double max_ol_quantity) {
 		System.out.println(String.format(MESSAGE_POPULAR_ITEM, itemName, max_ol_quantity.toString()));
 	}
 	

@@ -5,7 +5,6 @@
 
 package app;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import com.datastax.driver.core.*;
@@ -104,7 +103,7 @@ public class StockLevel {
 	//=====================================================================================
 	public Long countItemBelowThreshold(int d_id, int w_id, int nextAvailableOrderID, int numOfLastOrder, int stockThreshold) {
 		Long countBelowThreshold = new Long(0);
-		BigDecimal threshold = new BigDecimal(stockThreshold);
+		Double threshold = new Double(stockThreshold);
 		
 		
 		ResultSet resultSet;
@@ -131,7 +130,7 @@ public class StockLevel {
 	}
 
 	@SuppressWarnings("unused")
-	private Long testCountItemBelowThreshold(int w_id, Long countBelowThreshold, BigDecimal threshold, List<Row> items, int i) {
+	private Long testCountItemBelowThreshold(int w_id, Long countBelowThreshold, Double threshold, List<Row> items, int i) {
 		ResultSet resultSet;
 		int ol_i_id_test;
 		targetItemID = items.get(i);
@@ -141,7 +140,7 @@ public class StockLevel {
 		List<Row> stock = resultSet.all();
 		if(!stock.isEmpty()) {
 			targetStock = stock.get(0);
-			System.out.println("Item ID: " + ol_i_id_test + ", s_quantity = " + targetStock.getDecimal("s_quantity"));
+			System.out.println("Item ID: " + ol_i_id_test + ", s_quantity = " + targetStock.getDouble("s_quantity"));
 			countBelowThreshold += 1;
 		}
 		return countBelowThreshold;
