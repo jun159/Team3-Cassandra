@@ -5,7 +5,6 @@
 
 package app;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import com.datastax.driver.core.*;
@@ -98,9 +97,9 @@ public class Payment {
 				targetCustomer.getTimestamp("c_since"),
 				
 				targetCustomer.getString("c_credit"),
-				targetCustomer.getDecimal("c_credit_lim"),
-				targetCustomer.getDecimal("c_discount"),
-				targetCustomer.getDecimal("c_balance")));
+				targetCustomer.getDouble("c_credit_lim"),
+				targetCustomer.getDouble("c_discount"),
+				targetCustomer.getDouble("c_balance")));
 		
 		System.out.println(String.format(MESSAGE_WAREHOUSE, 
 				targetWarehouse.getString("w_street_1"),
@@ -148,18 +147,18 @@ public class Payment {
 	}
 	
 	private void updateWarehouse(final int w_id, final float payment) {
-		BigDecimal w_ytd = targetWarehouse.getDecimal("w_ytd").add(BigDecimal.valueOf(payment));
+		double w_ytd = targetWarehouse.getDouble("w_ytd") + payment;
 		session.execute(warehouseUpdate.bind(w_ytd, w_id));
 	}
 	
 	private void updateDistrict(final int w_id, final int d_id, final float payment) {
-		BigDecimal d_ytd = targetDistrict.getDecimal("d_ytd").add(BigDecimal.valueOf(payment));
+		double d_ytd = targetDistrict.getDouble("d_ytd") + payment;
 		session.execute(districtUpdate.bind(d_ytd, w_id, d_id));
 	}
 	
 	private void updateCustomer(final int w_id, final int d_id, 
 			final int c_id, final float payment) {		
-		BigDecimal c_balance = targetCustomer.getDecimal("c_balance").subtract(BigDecimal.valueOf(payment));
+		double c_balance = targetCustomer.getDouble("c_balance") - payment;
 		float c_ytd_payment = targetCustomer.getFloat("c_ytd_payment") + payment;
 		int c_payment_cnt = targetCustomer.getInt("c_payment_cnt") + 1;
 		session.execute(customerUpdate.bind(c_balance, c_ytd_payment, c_payment_cnt, w_id, d_id, c_id));

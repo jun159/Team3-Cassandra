@@ -5,7 +5,6 @@
 
 package app;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -75,7 +74,7 @@ public class NewOrder {
 	private Row targetStock;
 	private Row targetItem;
 	private Session session;
-	private float total_amount = 0;
+	private double total_amount = 0;
 	private Date o_entry_id;
 	
 	public NewOrder(CassandraConnect connect) {
@@ -92,7 +91,7 @@ public class NewOrder {
 	
 	public void processNewOrder(final int w_id, final int d_id, final int c_id, 
 			final float num_items, final int[] item_number, 
-			final int[] supplier_warehouse, final int[] quantity) {
+			final int[] supplier_warehouse, final double[] quantity) {
 		selectWarehouse(w_id);
 		selectDistrict(w_id, d_id);
 		selectCustomer(w_id, d_id, c_id);
@@ -110,13 +109,13 @@ public class NewOrder {
 				targetCustomer.getInt("c_id"),
 				targetCustomer.getString("c_last"),
 				targetCustomer.getString("c_credit"),
-				targetCustomer.getDecimal("c_discount")));
+				targetCustomer.getDouble("c_discount")));
 				
 		System.out.println(String.format(MESSAGE_WAREHOUSE, 
-				targetWarehouse.getDecimal("w_tax")));
+				targetWarehouse.getDouble("w_tax")));
 				
 		System.out.println(String.format(MESSAGE_DISTRICT, 
-				targetDistrict.getDecimal("d_tax")));
+				targetDistrict.getDouble("d_tax")));
 		
 		System.out.println(String.format(MESSAGE_ORDER, 
 				targetDistrict.getInt("d_next_o_id") - 1,
@@ -170,7 +169,7 @@ public class NewOrder {
 		}
 	}
 	
-	private void selectStock(final int w_id, final int d_id, final int i_id, final int warehouse, final int quantity) {	
+	private void selectStock(final int w_id, final int d_id, final int i_id, final int warehouse, final double quantity) {	
 		String dist = String.format("%02d", d_id);
 		this.stockSelect = session.prepare(String.format(SELECT_STOCK, dist));
 		ResultSet resultSet = session.execute(stockSelect.bind(w_id, i_id));
@@ -181,13 +180,13 @@ public class NewOrder {
 		}
 	}
 	
-	private void updateStock(final int w_id, final int d_id, final int i_id, final int warehouse, final int quantity) {	
-		BigDecimal s_quantity = targetStock.getDecimal("s_quantity").subtract(BigDecimal.valueOf(quantity));
-		if(s_quantity.compareTo(BigDecimal.valueOf(10)) == 1) {
-			s_quantity.add(BigDecimal.valueOf(100));
+	private void updateStock(final int w_id, final int d_id, final int i_id, final int warehouse, final double quantity) {	
+		double s_quantity = targetStock.getDouble("s_quantity") - quantity;
+		if(s_quantity == 10) {
+			s_quantity += 100;
 		}
 		
-		BigDecimal s_ytd = targetStock.getDecimal("s_ytd").add(BigDecimal.valueOf(quantity));
+		double s_ytd = targetStock.getDouble("s_ytd") + quantity;
 		int s_order_cnt = targetStock.getInt("s_order_cnt") + 1;
 		
 		int s_remote_cnt = 0;
@@ -203,12 +202,12 @@ public class NewOrder {
 		
 		o_entry_id = new Date();
 		int o_id = targetDistrict.getInt("d_next_o_id") - 1;
-		BigDecimal o_all_local = BigDecimal.valueOf(1);
-		BigDecimal o_ol_cnt = BigDecimal.valueOf(num_items);
+		double o_all_local = 1;
+		double o_ol_cnt = num_items;
 		
 		for (int id : supplier_warehouse) {
 			if (w_id != id) {
-				o_all_local = BigDecimal.valueOf(0);
+				o_all_local = 0;
 				break;
 			}
 		}
@@ -219,7 +218,7 @@ public class NewOrder {
 	
 	private void insertOrderLines(final int w_id, final int d_id,  
 			final float num_items, final int[] item_number, 
-			final int[] supplier_warehouse, final int[] quantity) {
+			final int[] supplier_warehouse, final double[] quantity) {
 		
 		int o_id = targetDistrict.getInt("d_next_o_id") - 1;
 		
@@ -227,12 +226,12 @@ public class NewOrder {
 			selectStock(w_id, d_id, item_number[i], supplier_warehouse[i], quantity[i]);
 			updateStock(w_id, d_id, item_number[i], supplier_warehouse[i], quantity[i]);
 			selectItem(item_number[i]);	
-			float item_price = Float.parseFloat(targetItem.getDecimal("i_price").toString());
-			float item_amount = quantity[i] * item_price;		
+			double item_price = targetItem.getDouble("i_price");
+			double item_amount = quantity[i] * item_price;		
 			total_amount = total_amount + item_amount;
 			String d_dist_id = String.format("s_dist_%1$s", String.format("%02d", d_id));
 			session.execute(orderLineInsert.bind(w_id, d_id, o_id, i, item_number[i], 
-					null, BigDecimal.valueOf(item_amount), supplier_warehouse[i], BigDecimal.valueOf(quantity[i]), 
+					null, item_amount, supplier_warehouse[i], quantity[i], 
 					targetStock.getString(d_dist_id)));
 			
 			System.out.println(String.format(MESSAGE_ORDER_ITEM, 
@@ -241,14 +240,14 @@ public class NewOrder {
 					supplier_warehouse[i],
 					quantity[i],
 					item_amount,
-					targetStock.getDecimal("s_quantity")));
+					targetStock.getDouble("s_quantity")));
 		}
 	}
 	
 	private void computeTotal() {
-		float w_tax = Float.parseFloat(targetWarehouse.getDecimal("w_tax").toString());
-		float d_tax = Float.parseFloat(targetDistrict.getDecimal("d_tax").toString());
-		float c_discount = Float.parseFloat(targetCustomer.getDecimal("c_discount").toString());
+		double w_tax = targetWarehouse.getDouble("w_tax");
+		double d_tax = targetDistrict.getDouble("d_tax");
+		double c_discount = targetCustomer.getDouble("c_discount");
 		total_amount = total_amount * (1 + d_tax + w_tax) * (1 - c_discount);
 	}
 }
