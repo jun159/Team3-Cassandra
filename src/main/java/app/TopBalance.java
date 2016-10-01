@@ -67,10 +67,10 @@ public class TopBalance {
 	// Processing Top Balance transaction
 	//====================================================================================
 
-	public void processTopBalance() {
+	public void processTopBalance(int numOfWarehouse) {
 		ArrayList<Row> result = new ArrayList<Row>();
 		
-		for(int i = 1; i < 9; i++) {
+		for(int i = 1; i <= numOfWarehouse; i++) {
 			ResultSet resultSet = session.execute(topBalance_Select.bind(i));
 			ArrayList<Row> set = (ArrayList<Row>) resultSet.all();
 			result.addAll(set);
