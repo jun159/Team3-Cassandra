@@ -119,7 +119,7 @@ CREATE TABLE StockItem (
 	I_PRICE double,
 	I_IM_ID int,
 	I_DATA varchar,
-	PRIMARY KEY ((S_W_ID),(S_I_ID),)
+	PRIMARY KEY ((S_W_ID),S_I_ID)
 );
 
 
