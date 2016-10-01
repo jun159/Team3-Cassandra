@@ -58,6 +58,18 @@ CREATE TABLE Customer (
 	PRIMARY KEY((C_W_ID, C_D_ID), C_ID) 
 );
 
+DROP MATERIALIZED VIEW IF EXISTS team3.customer_by_balance;
+
+CREATE MATERIALIZED VIEW IF NOT EXISTS team3.customer_by_balance AS
+SELECT c_balance, c_w_id, c_d_id, c_id, c_first, c_middle, c_last
+	FROM customer
+	WHERE c_w_id IS NOT NULL 
+	AND c_balance IS NOT NULL
+	AND c_d_id IS NOT NULL
+	AND c_id IS NOT NULL
+	PRIMARY KEY (c_w_id, c_balance, c_d_id, c_id)
+WITH CLUSTERING ORDER BY (c_balance DESC);
+
 CREATE TABLE Orders (
 	O_W_ID int,
 	O_D_ID int,
