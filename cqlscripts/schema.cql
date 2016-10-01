@@ -82,14 +82,14 @@ CREATE TABLE Orders (
 	PRIMARY KEY ((O_W_ID, O_D_ID), O_ID)
 ) WITH CLUSTERING ORDER BY (O_ID DESC);
 
---CREATE TABLE Item (
---	I_ID int,
---	I_NAME varchar,
---	I_PRICE double,
---	I_IM_ID int,
---	I_DATA varchar,
---	PRIMARY KEY (I_ID)
---);
+CREATE TABLE Item (
+	I_ID int,
+	I_NAME varchar,
+	I_PRICE double,
+	I_IM_ID int,
+	I_DATA varchar,
+	PRIMARY KEY (I_ID)
+);
 
 CREATE TABLE OrderLine (
 	OL_W_ID int,
@@ -108,7 +108,7 @@ CREATE TABLE OrderLine (
 CREATE INDEX ON OrderLine (OL_O_ID);
 CREATE INDEX ON OrderLine (OL_QUANTITY);
 
-CREATE TABLE StockItem (
+CREATE TABLE Stock (
 	S_W_ID int,
 	S_I_ID int,
 	S_QUANTITY double,
@@ -126,18 +126,10 @@ CREATE TABLE StockItem (
 	S_DIST_09 varchar,
 	S_DIST_10 varchar,
 	S_DATA varchar,
-
-	I_NAME varchar,
-	I_PRICE double,
-	I_IM_ID int,
-	I_DATA varchar,
-	PRIMARY KEY ((S_W_ID),S_I_ID)
+	PRIMARY KEY ((S_W_ID), S_I_ID)
 );
 
-
-
-
---CREATE TABLE Stock (
+--CREATE TABLE StockItem (
 --	S_W_ID int,
 --	S_I_ID int,
 --	S_QUANTITY double,
@@ -155,5 +147,11 @@ CREATE TABLE StockItem (
 --	S_DIST_09 varchar,
 --	S_DIST_10 varchar,
 --	S_DATA varchar,
---	PRIMARY KEY ((S_W_ID), S_I_ID)
---);
+
+--	I_NAME varchar,
+--	I_PRICE double,
+--	I_IM_ID int,
+--	I_DATA varchar,
+--	PRIMARY KEY ((S_W_ID),S_I_ID)
+-- );
+
