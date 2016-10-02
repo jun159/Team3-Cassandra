@@ -18,6 +18,7 @@ import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 
 public class TopBalance {
+	private static final int TOP_TEN = 10;
 	private static final String MESSAGE_CUSTOMER_NAME = "Name of Customer: %s\n";
 	private static final String MESSAGE_CUSTOMER_BALANCE = "Customer Balance: %2f\n";
 	private static final String MESSAGE_WAREHOUSE_NAME_OF_CUSTOMER = "Warehouse Name of Customer: %s\n";
@@ -68,6 +69,7 @@ public class TopBalance {
 	//====================================================================================
 
 	public void processTopBalance(int numOfWarehouse) {
+		
 		ArrayList<Row> result = new ArrayList<Row>();
 		
 		for(int i = 1; i <= numOfWarehouse; i++) {
@@ -82,7 +84,7 @@ public class TopBalance {
             }
         });
 		
-		for(int i = 0; i < 10; i++) {
+		for(int i = 0; i < TOP_TEN; i++) {
 			printCustomerName(result.get(i).getString("c_first"));
 			printCustomerBalance(result.get(i).getDouble("c_balance"));
 			printWarehouseNameOfCustomer(getWarehouseName(result.get(i).getInt("c_w_id")));
