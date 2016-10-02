@@ -44,7 +44,7 @@ public class MainDriver {
 //		this.orderStatusXact = new OrderStatus(connect);
 //		this.stockLevelXact = new StockLevel(connect);
 //		this.popularItemXact = new PopularItem(connect);
-//		this.topBalanceXact = new TopBalance(connect);
+		this.topBalanceXact = new TopBalance(connect);
 		this.database = database;
 		this.xactID = xactID;
 		this.numTransactions = 0;
@@ -82,9 +82,9 @@ public class MainDriver {
 //		            case XACT_POPULARITEM:
 //		               	runPopularItemXact(args);
 //		               	break;
-//		            case XACT_TOPBALANCE:
-//		                	runTopBalanceXact(args);
-//		                	break;
+		            case XACT_TOPBALANCE:
+		                	runTopBalanceXact(Integer.parseInt(database));
+		                	break;
 	                }
 	                
 	                numTransactions++;
@@ -164,8 +164,8 @@ public class MainDriver {
 		popularItemXact.processPopularItem(w_id, d_id, numOfLastOrder);
 	}
 	
-	private void runTopBalanceXact(String[] args) {
-//		topBalanceXact.processTopBalance();
+	private void runTopBalanceXact(int database) {
+		topBalanceXact.processTopBalance(database);
 	}
 	
 	private void outputResults() {
