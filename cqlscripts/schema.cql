@@ -30,7 +30,7 @@ CREATE TABLE District (
 	D_TAX double,
 	D_YTD double,
 	D_NEXT_O_ID int,
-	PRIMARY KEY (D_W_ID, D_NEXT_O_ID, D_ID)
+	PRIMARY KEY (D_W_ID, D_ID)
 );
 
 CREATE TABLE Customer (
