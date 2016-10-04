@@ -95,10 +95,11 @@ public class Delivery {
 				BoundStatement OL_select = new BoundStatement(orderLineSelect);
 				results = session.execute(OL_select.bind(o_id,W_ID,i));
 				
-				BigDecimal B = BigDecimal.valueOf(0);
+//				BigDecimal B = BigDecimal.valueOf(0);
+				Double B = 0.0;
 				for (Row row : results) {
-					B.add(row.getDecimal("ol_amount"));
-//					B = B +  row.getDouble("ol_amount");
+//					B.add(row.getDecimal("ol_amount"));
+					B = B +  row.getDouble("ol_amount");
 				}
 				
 				//get c_balance from customer before update
@@ -108,7 +109,8 @@ public class Delivery {
 				int c_delivery_cnt = 0;
 				for (Row row : results) {
 					c_delivery_cnt = row.getInt("c_delivery_cnt");
-					B.add(row.getDecimal("c_balance"));
+//					B.add(row.getDecimal("c_balance"));
+					B += row.getDouble("c_balance");
 				}
 				
 				//update the customer
@@ -125,8 +127,7 @@ public class Delivery {
 			
 //			connect = new CassandraConnect("localhost", 9042, "team3");
 //			Delivery d = new Delivery(connect);
-//			d.processDelivery(1, 2);
-//			
+//			d.processDelivery(1, 2);		
 //			connect.close();
 		}
 		
