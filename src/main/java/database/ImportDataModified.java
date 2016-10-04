@@ -1,5 +1,4 @@
-
-package soc.database;
+package database;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -9,16 +8,11 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.cassandra.dht.Murmur3Partitioner;
-import org.apache.cassandra.io.sstable.CQLSSTableWriter;
-
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
 
-
-
 public class ImportDataModified {
-	static String path = "./data/D8data";
+	static String path = "./data/D8-data";
 	static String nodeIP = "127.0.0.1";
 	static String keyspace = "team3";
 	 //192.168.48.227    xcnd8.comp.nus.edu.sg
