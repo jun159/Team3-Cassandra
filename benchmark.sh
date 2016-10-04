@@ -32,7 +32,7 @@ else
 	echo -ne "Start downloading D8-data..."
 	wget http://www.comp.nus.edu.sg/~cs4224/D8-data.zip
 	unzip D8-data.zip
-	curl http://www.comp.nus.edu.sg/~cs4224/D8-xact-revised-b.zip
+	wget http://www.comp.nus.edu.sg/~cs4224/D8-xact-revised-b.zip
 	unzip D8-xact-revised-b.zip
 	echo "completed"
 fi
@@ -47,7 +47,7 @@ else
 	echo -ne "Start downloading D8-data..."
 	wget http://www.comp.nus.edu.sg/~cs4224/D40-data.zip
 	unzip D40-data.zip
-	curl http://www.comp.nus.edu.sg/~cs4224/D40-xact-revised-b.zip
+	wget http://www.comp.nus.edu.sg/~cs4224/D40-xact-revised-b.zip
 	unzip D40-xact-revised-b.zip
 	echo "D40-data download completed"
 fi
