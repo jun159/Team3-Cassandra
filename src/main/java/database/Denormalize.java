@@ -39,7 +39,7 @@ public class Denormalize {
             System.out.print("Loading stocks data...");
 			while ((line = bufferRead.readLine()) != null) {
 				String[] content = line.split(",");
-				System.out.println("INSERT!!");
+
 				statement = "Insert into team3.StockItem (" +
 							"S_W_ID ,"+ 
 							"S_I_ID ,"+ 
