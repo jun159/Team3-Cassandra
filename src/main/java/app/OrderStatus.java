@@ -43,7 +43,7 @@ public class OrderStatus {
 		for (Row row : result) {
 //			c_id = row.getInt("c_id");
 			System.out.println("Customer Name: " + row.getString("c_first") +" "+row.getString("c_middle")
-					+ " "+ row.getString("c_last")+ " Balance: " + row.getDecimal("c_balance"));
+					+ " "+ row.getString("c_last")+ " Balance: " + row.getDouble("c_balance"));
 		}
 		
 		//2. output customer last order
@@ -73,8 +73,8 @@ public class OrderStatus {
 		for (Row row : orderLineResult) {
 			System.out.println("Item numer: " + row.getInt("ol_i_id")
 					+"Supplying warehouse number: "+ row.getInt("OL_SUPPLY_W_ID")
-					+"Quantity ordered:" + row.getDecimal("OL_QUANTITY")
-					+"Total price for ordered item: "+ row.getDecimal("OL_AMOUNT")
+					+"Quantity ordered:" + row.getDouble("OL_QUANTITY")
+					+"Total price for ordered item: "+ row.getDouble("OL_AMOUNT")
 					+"Data and time of delivery: "+row.getTimestamp("OL_DELIVERY_D"));		
 		}
 	}
