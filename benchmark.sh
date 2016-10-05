@@ -47,7 +47,7 @@ then
 	echo "yes"
 else
 	echo "no"
-	echo -ne "Start downloading D8-data..."
+	echo -ne "Start downloading D40-data..."
 	wget http://www.comp.nus.edu.sg/~cs4224/D40-data.zip &>/dev/null
 	unzip D40-data.zip &>/dev/null
 	wget http://www.comp.nus.edu.sg/~cs4224/D40-xact-revised-b.zip &>/dev/null
