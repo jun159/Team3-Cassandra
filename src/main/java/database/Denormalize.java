@@ -12,19 +12,15 @@ import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.Session;
 
 public class Denormalize {
-	private static String path = "./data/D%$s-data";
-	private static String nodeIP = "127.0.0.1";
+	private static String FILEPATH = "./data/D%1$s-data";
+	private static String NODEIP = "127.0.0.1";
+	private String path;
 	
-	public static void main(String[] args) {
-		if(args.length == 1) {
-			path = args[0];
-			Denormalize denormalize = new Denormalize();
-			denormalize.importStock();    //import stock table first, then update StockItem table
-			denormalize.updateItem();
-		}
+	public Denormalize(String dbType) {
+		this.path = String.format(FILEPATH, dbType);
 	}
 	
-	public void importStock(){
+	private void importStock(){
 		String fileName = path + "/stock.csv";
 
 		Cluster cluster;
@@ -32,7 +28,7 @@ public class Denormalize {
 		String line = null;
 		String statement;
 				
-		cluster = Cluster.builder().addContactPoint(nodeIP).build();
+		cluster = Cluster.builder().addContactPoint(NODEIP).build();
 		session = cluster.connect();
 
 		BufferedReader bufferRead = null;
@@ -43,8 +39,7 @@ public class Denormalize {
             System.out.print("Loading stocks data...");
 			while ((line = bufferRead.readLine()) != null) {
 				String[] content = line.split(",");
-				
-			
+				System.out.println("INSERT!!");
 				statement = "Insert into team3.StockItem (" +
 							"S_W_ID ,"+ 
 							"S_I_ID ,"+ 
@@ -93,8 +88,7 @@ public class Denormalize {
 		System.out.println("success");
 	}
 	
-	
-	public void updateItem(){
+	private void updateItem(){
 		String fileName = path + "/item.csv";
 
 		Cluster cluster;
@@ -102,7 +96,7 @@ public class Denormalize {
 		String line = null;
 		String statement;
 				
-		cluster = Cluster.builder().addContactPoint(nodeIP).build();
+		cluster = Cluster.builder().addContactPoint(NODEIP).build();
 		session = cluster.connect();
 
 		BufferedReader bufferRead = null;
@@ -131,5 +125,13 @@ public class Denormalize {
 		cluster.close();
 		System.out.println("success");
 		
-	}	
+	}
+	
+	public static void main(String[] args) {
+		if(args.length == 1) {
+			Denormalize denormalize = new Denormalize(args[0]);
+			denormalize.importStock();    //import stock table first, then update StockItem table
+			denormalize.updateItem();
+		}
+	}
 }
