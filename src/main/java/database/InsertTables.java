@@ -20,6 +20,7 @@ public class InsertTables {
 		 session.execute(cqlStatement);
 		
 		 //create the warehouse
+         System.out.print("Creating warehouse table...");
 		 cqlStatement = "CREATE TABLE IF NOT EXISTS team3.Warehouse("+
 				 	"W_ID int,"+
 					"W_NAME varchar,"+
@@ -33,9 +34,10 @@ public class InsertTables {
 					"PRIMARY KEY (W_ID)"+
                  ");";
 		 session.execute(cqlStatement);
-		 System.out.println("warehouse created");
+		 System.out.println("success");
 		 
 		 //create the district
+         System.out.print("Creating district table...");
 		 cqlStatement = "CREATE TABLE IF NOT EXISTS team3.District("+
 				    "D_W_ID int,"+
 					"D_ID int,"+
@@ -51,8 +53,9 @@ public class InsertTables {
 					"PRIMARY KEY ((D_W_ID), D_ID)"+
                  ");";
 		 session.execute(cqlStatement);
-		 System.out.println("District created");
+		 System.out.println("success");
 		 
+         System.out.print("Creating customer table...");
 		 cqlStatement = "CREATE TABLE IF NOT EXISTS team3.Customer("+
 				 	"C_W_ID int,"+
 					"C_D_ID int,"+
@@ -78,9 +81,10 @@ public class InsertTables {
 					"PRIMARY KEY((C_W_ID, C_D_ID), C_ID)"+ 
 				 ");";
 		 session.execute(cqlStatement);
-		 System.out.println("Customer created");
+		 System.out.println("success");
 		 
 		 //create orders table
+         System.out.print("Creating orders table...");
 		 cqlStatement = "CREATE TABLE IF NOT EXISTS team3.Orders("+
 					"O_W_ID int,"+ 
 					"O_D_ID int,"+ 
@@ -94,7 +98,7 @@ public class InsertTables {
 				") WITH CLUSTERING ORDER BY (O_ID DESC)"+ 
                  ";";
 		 session.execute(cqlStatement);
-		 System.out.println("Orders created");
+		 System.out.println("success");
 		 
 		 
 				 
@@ -110,7 +114,8 @@ public class InsertTables {
 //		 session.execute(cqlStatement);
 //		 System.out.println("Item created");
 		 
-		//create item orderLine 
+		//create item orderLine
+         System.out.print("Creating orderline table...");
 		 cqlStatement = "CREATE TABLE IF NOT EXISTS team3.OrderLine("+
 				 	"OL_W_ID int,"+ 
 					"OL_D_ID int,"+ 
@@ -125,9 +130,10 @@ public class InsertTables {
 					"PRIMARY KEY ((OL_W_ID, OL_D_ID, OL_O_ID), OL_NUMBER)"+ 
                  ");";
 		 session.execute(cqlStatement);
-		 System.out.println("OrderLine created");
+		 System.out.println("success");
 	
 		 //create StockItem table
+         System.out.print("Creating stockitem table...");
 		 cqlStatement = "CREATE TABLE IF NOT EXISTS team3.StockItem (" + 
 				 	"S_W_ID int,"+ 
 					"S_I_ID int,"+ 
@@ -154,10 +160,8 @@ public class InsertTables {
 					"PRIMARY KEY ((S_W_ID), S_I_ID)"+ 
                  ");";
 		 session.execute(cqlStatement);
-		 System.out.println("Stock created");
+		 System.out.println("success");
 		 
-		 
-		 System.out.println("Done");
 		 System.exit(0);
 	}
 }

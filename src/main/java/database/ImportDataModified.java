@@ -19,13 +19,13 @@ public class ImportDataModified {
 //	insert.importItem();
 	public static void main(String[] args) {
 		ImportDataModified insert = new ImportDataModified();
-//		insert.importWareHouse();
-//		insert.importDistrict();
-//		insert.importCustomer();
-//		insert.importOrder();
+		insert.importWareHouse();
+		insert.importDistrict();
+		insert.importCustomer();
+		insert.importOrder();
 
-//		insert.importOrderLine();
-//		insert.importStock();    //import stock table first, then update StockItem table
+		insert.importOrderLine();
+		insert.importStock();    //import stock table first, then update StockItem table
 		insert.updateItem();
 		
 	}
@@ -48,6 +48,7 @@ public class ImportDataModified {
 			FileReader fileReader = new FileReader(fileName);
 			bufferRead = new BufferedReader(fileReader);
 
+            System.out.print("Loading warehouses data...");
 			while ((line = bufferRead.readLine()) != null) {
 				String[] content = line.split(",");
 	
@@ -71,7 +72,7 @@ public class ImportDataModified {
 						 "" + content[7]+","+ 
 						 "" + content[8]+ ") IF NOT EXISTS;";		
 				session.execute(statement);
-				System.out.println("W_ID " +content[0]);		 
+//				System.out.print("W_ID " +content[0] + " ");
 			}
 			bufferRead.close();  //must be closed
 		} catch (FileNotFoundException ex) {
@@ -81,7 +82,7 @@ public class ImportDataModified {
 		}
 
 		cluster.close();
-		System.out.println("Warehouse Inserted.");
+		System.out.println("success");
 	}
 
 	public void importDistrict() {
@@ -100,6 +101,7 @@ public class ImportDataModified {
 			FileReader fileReader = new FileReader(fileName);
 			bufferRead = new BufferedReader(fileReader);
 
+            System.out.print("Loading districts data...");
 			while ((line = bufferRead.readLine()) != null) {
 				String[] content = line.split(",");
 	
@@ -127,7 +129,7 @@ public class ImportDataModified {
 							"" + content[9]+","+ 
 							"" + content[10]+ ")IF NOT EXISTS;";		
 				session.execute(statement);
-				System.out.println("D_W_ID " +content[0] + " D_ID " + content[1]);		 
+//				System.out.print("D_W_ID " +content[0] + " D_ID " + content[1] + " ");
 			}
 			bufferRead.close();  //must be closed
 		} catch (FileNotFoundException ex) {
@@ -136,7 +138,7 @@ public class ImportDataModified {
 			System.out.println("reading file Error '" + fileName + "'");
 		}
 		cluster.close();
-		System.out.println("District Inserted.");
+		System.out.println("success");
 	}
 	
 	public void importCustomer(){
@@ -201,6 +203,7 @@ public class ImportDataModified {
 			FileReader fileReader = new FileReader(fileName);
 			bufferRead = new BufferedReader(fileReader);
 
+            System.out.print("Loading customers data...");
 			while ((line = bufferRead.readLine()) != null) {
 				String[] content = line.split(",");
 	
@@ -249,7 +252,7 @@ public class ImportDataModified {
 						"" + content[19]+","+ 
 						"'" + content[20]+ "')IF NOT EXISTS;";		
 				session.execute(statement);
-				System.out.println("C_W_ID " +content[0] + " C_D_ID " + content[1]);		 
+//				System.out.print("C_W_ID " +content[0] + " C_D_ID " + content[1] + " ");
 			}
 			bufferRead.close();  //must be closed
 		} catch (FileNotFoundException ex) {
@@ -258,7 +261,7 @@ public class ImportDataModified {
 			System.out.println("reading file Error '" + fileName + "'");
 		}
 		cluster.close();
-		System.out.println("Customer Inserted.");
+		System.out.println("success");
 		
 	}
 	
@@ -278,6 +281,7 @@ public class ImportDataModified {
 			FileReader fileReader = new FileReader(fileName);
 			bufferRead = new BufferedReader(fileReader);
 
+            System.out.print("Loading orders data...");
 			while ((line = bufferRead.readLine()) != null) {
 				String[] content = line.split(",");
 	
@@ -301,7 +305,7 @@ public class ImportDataModified {
 							"blobAsBigint(timestampAsBlob('" + content[7]+"'))"+
 							")IF NOT EXISTS;";
 				session.execute(statement);
-				System.out.println("O_W_ID " +content[0] + " O_D_ID " + content[1]);		 
+//				System.out.print("O_W_ID " +content[0] + " O_D_ID " + content[1] + " ");
 			}
 			bufferRead.close();  //must be closed
 		} catch (FileNotFoundException ex) {
@@ -310,7 +314,7 @@ public class ImportDataModified {
 			System.out.println("reading file Error '" + fileName + "'");
 		}
 		cluster.close();
-		System.out.println("Orders Inserted.");
+		System.out.println("success");
 	}
 	
 /*
@@ -376,6 +380,7 @@ public class ImportDataModified {
 			FileReader fileReader = new FileReader(fileName);
 			bufferRead = new BufferedReader(fileReader);
 
+            System.out.print("Loading orderlines data...");
 			while ((line = bufferRead.readLine()) != null) {
 				String[] content = line.split(",");
 				if(content[5].endsWith("null")) content[5]="";
@@ -402,7 +407,7 @@ public class ImportDataModified {
 							"" + content[8]+","+	
 							"'" + content[9]+"')IF NOT EXISTS;";		
 				session.execute(statement);
-				System.out.println("OL_I_ID " +content[4]);		 
+//				System.out.print("OL_I_ID " +content[4] + " ");
 			}
 			bufferRead.close();  //must be closed
 		} catch (FileNotFoundException ex) {
@@ -411,7 +416,7 @@ public class ImportDataModified {
 			System.out.println("reading file Error '" + fileName + "'");
 		}
 		cluster.close();
-		System.out.println("OrderLine Inserted.");
+		System.out.println("success");
 	}
 	
 	public void importStock(){
@@ -430,6 +435,7 @@ public class ImportDataModified {
 			FileReader fileReader = new FileReader(fileName);
 			bufferRead = new BufferedReader(fileReader);
 
+            System.out.print("Loading stocks data...");
 			while ((line = bufferRead.readLine()) != null) {
 				String[] content = line.split(",");
 				
@@ -471,7 +477,7 @@ public class ImportDataModified {
 							"'" + content[15]+"',"+
 							"'" + content[16]+ "')IF NOT EXISTS;";		
 				session.execute(statement);
-				System.out.println("S_W_ID " +content[0] + " S_QUANTITY " + content[2]);		 
+//				System.out.print("S_W_ID " +content[0] + " S_QUANTITY " + content[2] + " ");
 			}
 			bufferRead.close();  //must be closed
 		} catch (FileNotFoundException ex) {
@@ -480,7 +486,7 @@ public class ImportDataModified {
 			System.out.println("reading file Error '" + fileName + "'");
 		}
 		cluster.close();
-		System.out.println("Stock Inserted.");
+		System.out.println("success");
 	}
 	
 	
@@ -500,6 +506,7 @@ public class ImportDataModified {
 			FileReader fileReader = new FileReader(fileName);
 			bufferRead = new BufferedReader(fileReader);
 
+            System.out.print("Loading items data...");
 			while ((line = bufferRead.readLine()) != null) {
 				String[] content = line.split(",");
 				
@@ -512,7 +519,7 @@ public class ImportDataModified {
 						
 //							"'" + content[4]+ "')IF NOT EXISTS;";		
 				session.execute(statement);
-				System.out.println("Item. " +content[0]);
+//				System.out.print("Item. " +content[0] + " ");
 			}
 			bufferRead.close();  //must be closed
 		} catch (FileNotFoundException ex) {
@@ -521,7 +528,7 @@ public class ImportDataModified {
 			System.out.println("reading file Error '" + fileName + "'");
 		}
 		cluster.close();
-		System.out.println("Item Updated.");
+		System.out.println("success");
 		
 	}
 	
