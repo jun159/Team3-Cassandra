@@ -1,9 +1,17 @@
+DROP MATERIALIZED VIEW IF EXISTS team3.customer_by_balance;
 DROP TABLE IF EXISTS team3.Warehouse;
 DROP TABLE IF EXISTS team3.District;
 DROP TABLE IF EXISTS team3.Customer;
 DROP TABLE IF EXISTS team3.Orders;
 DROP TABLE IF EXISTS team3.OrderLine;
 DROP TABLE IF EXISTS team3.StockItem;
+
+DROP KEYSPACE IF EXISTS team3;
+
+CREATE KEYSPACE team3 WITH replication =
+{'class':'SimpleStrategy','replication_factor':1};
+
+
 
 
 USE team3;
