@@ -22,6 +22,7 @@ public class Denormalize {
 	
 	private void importStock(){
 		String fileName = path + "/stock.csv";
+		int current = 0;
 
 		Cluster cluster;
 		Session session;
@@ -36,8 +37,7 @@ public class Denormalize {
 			FileReader fileReader = new FileReader(fileName);
 			bufferRead = new BufferedReader(fileReader);
 
-            System.out.print("Loading stocks data...");
-			while ((line = bufferRead.readLine()) != null) {
+            while ((line = bufferRead.readLine()) != null) {
 				String[] content = line.split(",");
 
 				statement = "Insert into team3.StockItem (" +
@@ -77,6 +77,7 @@ public class Denormalize {
 							"'" + content[15]+"',"+
 							"'" + content[16]+ "')IF NOT EXISTS;";		
 				session.execute(statement);
+				System.out.print(String.format("Rows imported from stock: %1$s\r", current++));
 			}
 			bufferRead.close();  //must be closed
 		} catch (FileNotFoundException ex) {
@@ -90,6 +91,7 @@ public class Denormalize {
 	
 	private void updateItem(){
 		String fileName = path + "/item.csv";
+		int current = 0;
 
 		Cluster cluster;
 		Session session;
@@ -115,6 +117,7 @@ public class Denormalize {
 							"I_DATA = '" + content[4]+ "' "+
 							"where S_W_ID in (1,2,3,4,5,6,7,8) AND S_I_ID = " + content[0]+ "; ";	
 				session.execute(statement);
+				System.out.print(String.format("Rows imported from item: %1$s\r", current++));
 			}
 			bufferRead.close();  //must be closed
 		} catch (FileNotFoundException ex) {
