@@ -65,7 +65,8 @@ public class PopularItem {
 	private static final String ITEM_NAME = 
 			          "SELECT i_name "
 					+ "FROM stockitem "
-					+ "WHERE s_i_id = ?;";
+					+ "WHERE s_i_id = ? "
+					+ "ALLOW FILTERING ;";
 	
 	//====================================================================================
 	// Preparing for session
