@@ -35,11 +35,11 @@ public class NewOrder {
 			"UPDATE district SET d_next_o_id = ? "
 			+ "WHERE d_w_id = ? AND d_id = ?";
 	private static final String SELECT_STOCK =
-			"SELECT s_quantity, s_ytd, s_order_cnt, s_remote_cnt, s_dist_%1$s "
-			+ "FROM stock "
+			"SELECT s_quantity, s_ytd, s_order_cnt, s_remote_cnt, s_dist_%1$s, i_name, i_price "
+			+ "FROM stockitem "
 			+ "WHERE s_w_id = ? AND s_i_id = ?";
 	private static final String UPDATE_STOCK = 
-			"UPDATE stock "
+			"UPDATE stockitem "
 			+ "SET s_quantity = ?, s_ytd = ?, s_order_cnt = ?, s_remote_cnt = ? "
 			+ "WHERE s_w_id = ? AND s_i_id = ?";
 	private static final String SELECT_CUSTOMER =
@@ -59,7 +59,6 @@ public class NewOrder {
 	private PreparedStatement districtSelect;
 	private PreparedStatement customerSelect;
 	private PreparedStatement stockSelect;
-	private PreparedStatement itemSelect;
 	private PreparedStatement districtUpdate;
 	private PreparedStatement stockUpdate;
 	private PreparedStatement orderInsert;

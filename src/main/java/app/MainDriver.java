@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class MainDriver {
 	
-	private static final String MESSAGE_ERROR_ARGS = "Error: Please provide 3 arguments (database, numNodes, numClients)";
+	private static final String MESSAGE_ERROR_ARGS = "Error: Please provide 2 arguments (database, numClients)";
 	private static final String MESSAGE_ERROR_READ = "Error: Unable to read the transaction files. Please try again";
 	private static final String MESSAGE_XACT_SIZE = "Total number of transactions processed: ";
 	private static final String MESSAGE_ELAPSED_TIME = "Total elapsed time for processing the transactions: ";
@@ -40,10 +40,10 @@ public class MainDriver {
 		this.connect = new CassandraConnect("localhost", 9042, "team3");
 		this.newOrderXact = new NewOrder(connect);
 		this.paymentXact = new Payment(connect);
-//		this.deliveryXact = new Delivery(connect);
-//		this.orderStatusXact = new OrderStatus(connect);
-//		this.stockLevelXact = new StockLevel(connect);
-//		this.popularItemXact = new PopularItem(connect);
+		this.deliveryXact = new Delivery(connect);
+		this.orderStatusXact = new OrderStatus(connect);
+		this.stockLevelXact = new StockLevel(connect);
+		this.popularItemXact = new PopularItem(connect);
 		this.topBalanceXact = new TopBalance(connect);
 		this.database = database;
 		this.xactID = xactID;
@@ -70,18 +70,18 @@ public class MainDriver {
 		            case XACT_PAYMENT:
 		               	runPaymentXact(args);
 		                break;
-//		            case XACT_DELIVERY:
-//		                runDeliveryXact(args);
-//		                break;
-//		            case XACT_ORDERSTATUS:
-//		               	runOrderStatusXact(args);
-//		               	break;
-//		            case XACT_STOCKLEVEL:
-//		               	runStockLevelXact(args);
-//		               	break;
-//		            case XACT_POPULARITEM:
-//		               	runPopularItemXact(args);
-//		               	break;
+		            case XACT_DELIVERY:
+		                runDeliveryXact(args);
+		                break;
+		            case XACT_ORDERSTATUS:
+		               	runOrderStatusXact(args);
+		               	break;
+		            case XACT_STOCKLEVEL:
+		               	runStockLevelXact(args);
+		               	break;
+		            case XACT_POPULARITEM:
+		               	runPopularItemXact(args);
+		               	break;
 		            case XACT_TOPBALANCE:
 		                	runTopBalanceXact(Integer.parseInt(database));
 		                	break;
@@ -136,7 +136,7 @@ public class MainDriver {
 		int w_id = Integer.parseInt(args[1]);
 		int carrier_id = Integer.parseInt(args[2]);
 		
-//		deliveryXact.processDelivery(w_id, carrier_id);
+		deliveryXact.processDelivery(w_id, carrier_id);
 	}
 	
 	private void runOrderStatusXact(String[] args) {
@@ -144,7 +144,7 @@ public class MainDriver {
 		int d_id = Integer.parseInt(args[2]);
 		int c_id = Integer.parseInt(args[3]);
 		
-//		orderStatusXact.processOrderStatus(w_id, d_id, c_id);
+		orderStatusXact.processOrderStatus(w_id, d_id, c_id);
 	}
 	
 	private void runStockLevelXact(String[] args) {
@@ -178,22 +178,22 @@ public class MainDriver {
 	}
 	
 	public static void main(String[] args) {
-		if(args.length == 1) {
-			MainDriver mainDriver = new MainDriver(args[0], args[1]);
-			mainDriver.executeQueries();
-			mainDriver.outputResults();
-		} else {
-			System.err.println(MESSAGE_ERROR_ARGS);
-		}
+//		if(args.length == 2) {
+//			MainDriver mainDriver = new MainDriver(args[0], args[1]);
+//			mainDriver.executeQueries();
+//			mainDriver.outputResults();
+//		} else {
+//			System.err.println(MESSAGE_ERROR_ARGS);
+//		}
 
-//		Scanner sc = new Scanner(System.in);
-//		System.out.print("Enter database: ");	
-//		String data = sc.nextLine();
-//		System.out.print("Enter file number: ");
-//		String fileNum = sc.nextLine();
-//		sc.close();
-//		MainDriver mainDriver = new MainDriver(data, fileNum);
-//		mainDriver.executeQueries();
-//		mainDriver.outputResults();
+		Scanner sc = new Scanner(System.in);
+		System.out.print("Enter database: ");	
+		String data = sc.nextLine();
+		System.out.print("Enter file number: ");
+		String fileNum = sc.nextLine();
+		sc.close();
+		MainDriver mainDriver = new MainDriver(data, fileNum);
+		mainDriver.executeQueries();
+		mainDriver.outputResults();
 	}
 }
