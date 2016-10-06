@@ -42,7 +42,7 @@ public class Delivery {
 					 + "OrderLine SET OL_DELIVERY_D = dateOf(now()) WHERE ol_w_id =? AND ol_d_id=? AND ol_o_id =? AND ol_number =?;");
 			
 			
-			this.orderLineSelect = session.prepare("SELECT ol_amount FROM " 
+			this.orderLineSelect = session.prepare("SELECT sum(ol_amount) FROM " 
 					 + "OrderLine WHERE ol_o_id = ? AND ol_w_id = ? AND ol_d_id =?;");
 				
 			this.customerSelect = session.prepare("SELECT c_balance,c_delivery_cnt FROM " 
@@ -99,7 +99,8 @@ public class Delivery {
 				Double B = 0.0;
 				for (Row row : results) {
 //					B.add(row.getDecimal("ol_amount"));
-					B = B +  row.getDouble("ol_amount");
+//					B = B +  row.getDouble("ol_amount");
+					B= row.getDouble("system.sum(ol_amount)");
 				}
 				
 				//get c_balance from customer before update
