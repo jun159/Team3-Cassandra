@@ -64,8 +64,8 @@ public class PopularItem {
 	
 	private static final String ITEM_NAME = 
 			          "SELECT i_name "
-					+ "FROM item "
-					+ "WHERE i_id = ?;";
+					+ "FROM stockitem "
+					+ "WHERE s_i_id = ?;";
 	
 	//====================================================================================
 	// Preparing for session
@@ -254,7 +254,7 @@ public class PopularItem {
 	}
 	
 	//=====================================================================================
-	// CQL: Retrieve an item name from the Item Table
+	// CQL: Retrieve an item name from the StockItem Table
 	//=====================================================================================
 	public String getItemName(int item_ID) {
 
