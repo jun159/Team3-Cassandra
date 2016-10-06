@@ -30,7 +30,7 @@ public class StockLevel {
 	
 	private static final String COUNT_ITEM_BELOW_THRESHOLD = 
 			          "SELECT COUNT(*) "
-					+ "FROM stock "
+					+ "FROM stockitem "
 					+ "WHERE s_w_id = ? "
 					+ "and s_i_id = ? "
 					+ "and s_quantity < ? "
@@ -38,7 +38,7 @@ public class StockLevel {
 	
 	private static final String TEST_ITEM_S_QUANTITY_BELOW_THRESHOLD = 
 	          "SELECT s_quantity "
-			+ "FROM stock "
+			+ "FROM stockitem "
 			+ "WHERE s_w_id = ? "
 			+ "and s_i_id = ? "
 			+ "and s_quantity < ? "
