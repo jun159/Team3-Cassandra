@@ -25,7 +25,7 @@ fi
 cd data
 
 # Download D8 database if not exist
-echo -ne "\nbChecking whether D8-data exist..."
+echo -ne "\nChecking whether D8-data exist..."
 if [ -d $FOLDER_D8 ]
 then
     echo "yes"
@@ -41,7 +41,7 @@ else
 fi
 
 # Download D40 database if not exist
-echo -ne "\nbChecking whether D40-data exist..."
+echo -ne "\nChecking whether D40-data exist..."
 if [ -d $FOLDER_D40 ]
 then
     echo "yes"
@@ -59,13 +59,17 @@ fi
 cd
 
 # Bulk load data
-echo "\nbLoading warehouse, district, customer, order and orderline data into Cassandra..."
+echo -ne "\nLoading warehouse, district, customer, order and orderline data into Cassandra..."
 cd /temp/datastax-ddc-3.9.0/bin
-./cqlsh -f ~/Team3-Cassandra/schemascript.cql
+if [ $1 == 8 ]
+then
+    ./cqlsh -f ~/Team3-Cassandra/schemascript8.cql
+else
+    ./cqlsh -f ~/Team3-Cassandra/schemascript40.cql
+fi
 
 cd ~/Team3-Cassandra
-echo -ne "\nbLoading stock and item data into Cassandra.."
+echo -ne "\nLoading stock and item data into Cassandra.."
 mvn -q install &>/dev/null
 mvn -q compile &>/dev/null
 mvn -q exec:java -Dexec.mainClass="database.Denormalize" -Dexec.args="$1"
-echo "\nb"
