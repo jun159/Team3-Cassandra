@@ -178,22 +178,22 @@ public class MainDriver {
 	}
 	
 	public static void main(String[] args) {
-//		if(args.length == 2) {
-//			MainDriver mainDriver = new MainDriver(args[0], args[1]);
-//			mainDriver.executeQueries();
-//			mainDriver.outputResults();
-//		} else {
-//			System.err.println(MESSAGE_ERROR_ARGS);
-//		}
+		if(args.length == 2) {
+			MainDriver mainDriver = new MainDriver(args[0], args[1]);
+			mainDriver.executeQueries();
+			mainDriver.outputResults();
+		} else {
+			System.err.println(MESSAGE_ERROR_ARGS);
+		}
 
-		Scanner sc = new Scanner(System.in);
-		System.out.print("Enter database: ");	
-		String data = sc.nextLine();
-		System.out.print("Enter file number: ");
-		String fileNum = sc.nextLine();
-		sc.close();
-		MainDriver mainDriver = new MainDriver(data, fileNum);
-		mainDriver.executeQueries();
-		mainDriver.outputResults();
+//		Scanner sc = new Scanner(System.in);
+//		System.out.print("Enter database: ");	
+//		String data = sc.nextLine();
+//		System.out.print("Enter file number: ");
+//		String fileNum = sc.nextLine();
+//		sc.close();
+//		MainDriver mainDriver = new MainDriver(data, fileNum);
+//		mainDriver.executeQueries();
+//		mainDriver.outputResults();
 	}
 }
