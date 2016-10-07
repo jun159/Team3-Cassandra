@@ -68,7 +68,7 @@ fi
 cd
 
 # Bulk load data
-echo -ne "\nLoading warehouse, district, customer, order and orderline data into Cassandra..."
+echo -ne "\nLoading warehouse, district, customer, order, orderline and stock data into Cassandra..."
 cd /temp/datastax-ddc-3.9.0/bin
 ./cqlsh -f ~/Team3-Cassandra/schema.cql
 if [ $1 == 8 ]
@@ -79,7 +79,7 @@ else
 fi
 
 cd ~/Team3-Cassandra
-echo -ne "\nLoading stock and item data into Cassandra.."
+echo -ne "\nLoading item data into Cassandra.."
 mvn -q install &>/dev/null
 mvn -q compile &>/dev/null
 mvn -q exec:java -Dexec.mainClass="database.Denormalize" -Dexec.args="$1"
