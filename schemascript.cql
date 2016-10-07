@@ -9,10 +9,7 @@ DROP TABLE IF EXISTS team3.StockItem;
 DROP KEYSPACE IF EXISTS team3;
 
 CREATE KEYSPACE team3 WITH replication =
-{'class':'SimpleStrategy','replication_factor':1};
-
-
-
+{'class':'NetworkTopologyStrategy','datacenter1’:2};
 
 USE team3;
 
