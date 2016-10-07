@@ -35,17 +35,13 @@ public class NewOrder {
 			"UPDATE district SET d_next_o_id = ? "
 			+ "WHERE d_w_id = ? AND d_id = ?";
 	private static final String SELECT_STOCK =
-			"SELECT s_quantity, s_ytd, s_order_cnt, s_remote_cnt, s_dist_%1$s "
-			+ "FROM stock "
+			"SELECT s_quantity, s_ytd, s_order_cnt, s_remote_cnt, s_dist_%1$s, i_name, i_price "
+			+ "FROM stockitem "
 			+ "WHERE s_w_id = ? AND s_i_id = ?";
 	private static final String UPDATE_STOCK = 
-			"UPDATE stock "
+			"UPDATE stockitem "
 			+ "SET s_quantity = ?, s_ytd = ?, s_order_cnt = ?, s_remote_cnt = ? "
 			+ "WHERE s_w_id = ? AND s_i_id = ?";
-	private static final String SELECT_ITEM =
-			"SELECT i_price, i_name "
-			+ "FROM item "
-			+ "WHERE i_id = ?";
 	private static final String SELECT_CUSTOMER =
 			"SELECT c_w_id, c_d_id, c_id, c_last, c_credit, c_discount "
 			+ "FROM customer "
@@ -63,7 +59,6 @@ public class NewOrder {
 	private PreparedStatement districtSelect;
 	private PreparedStatement customerSelect;
 	private PreparedStatement stockSelect;
-	private PreparedStatement itemSelect;
 	private PreparedStatement districtUpdate;
 	private PreparedStatement stockUpdate;
 	private PreparedStatement orderInsert;
@@ -72,7 +67,6 @@ public class NewOrder {
 	private Row targetDistrict;
 	private Row targetCustomer;
 	private Row targetStock;
-	private Row targetItem;
 	private Session session;
 	private double total_amount = 0;
 	private Date o_entry_id;
@@ -84,7 +78,6 @@ public class NewOrder {
 		this.districtUpdate = session.prepare(UPDATE_DISTRICT);
 		this.customerSelect = session.prepare(SELECT_CUSTOMER);
 		this.stockUpdate = session.prepare(UPDATE_STOCK);
-		this.itemSelect = session.prepare(SELECT_ITEM);
 		this.orderInsert = session.prepare(INSERT_ORDER);
 		this.orderLineInsert = session.prepare(INSERT_ORDERLINE);
 	}
@@ -160,15 +153,6 @@ public class NewOrder {
 		}
 	}
 	
-	private void selectItem(final int i_id) {
-		ResultSet resultSet = session.execute(itemSelect.bind(i_id));
-		List<Row> items = resultSet.all();
-		
-		if(!items.isEmpty()) {
-			targetItem = items.get(0);
-		}
-	}
-	
 	private void selectStock(final int w_id, final int d_id, final int i_id, final int warehouse, final double quantity) {	
 		String dist = String.format("%02d", d_id);
 		this.stockSelect = session.prepare(String.format(SELECT_STOCK, dist));
@@ -225,8 +209,7 @@ public class NewOrder {
 		for(int i = 0; i < num_items; i++) {
 			selectStock(w_id, d_id, item_number[i], supplier_warehouse[i], quantity[i]);
 			updateStock(w_id, d_id, item_number[i], supplier_warehouse[i], quantity[i]);
-			selectItem(item_number[i]);	
-			double item_price = targetItem.getDouble("i_price");
+			double item_price = targetStock.getDouble("i_price");
 			double item_amount = quantity[i] * item_price;		
 			total_amount = total_amount + item_amount;
 			String d_dist_id = String.format("s_dist_%1$s", String.format("%02d", d_id));
@@ -236,7 +219,7 @@ public class NewOrder {
 			
 			System.out.println(String.format(MESSAGE_ORDER_ITEM, 
 					item_number[i],
-					targetItem.getString("i_name"),
+					targetStock.getString("i_name"),
 					supplier_warehouse[i],
 					quantity[i],
 					item_amount,

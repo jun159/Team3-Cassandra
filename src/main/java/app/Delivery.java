@@ -42,7 +42,7 @@ public class Delivery {
 					 + "OrderLine SET OL_DELIVERY_D = dateOf(now()) WHERE ol_w_id =? AND ol_d_id=? AND ol_o_id =? AND ol_number =?;");
 			
 			
-			this.orderLineSelect = session.prepare("SELECT ol_amount FROM " 
+			this.orderLineSelect = session.prepare("SELECT sum(ol_amount) FROM " 
 					 + "OrderLine WHERE ol_o_id = ? AND ol_w_id = ? AND ol_d_id =?;");
 				
 			this.customerSelect = session.prepare("SELECT c_balance,c_delivery_cnt FROM " 
@@ -95,10 +95,12 @@ public class Delivery {
 				BoundStatement OL_select = new BoundStatement(orderLineSelect);
 				results = session.execute(OL_select.bind(o_id,W_ID,i));
 				
-				BigDecimal B = BigDecimal.valueOf(0);
+//				BigDecimal B = BigDecimal.valueOf(0);
+				Double B = 0.0;
 				for (Row row : results) {
-					B.add(row.getDecimal("ol_amount"));
+//					B.add(row.getDecimal("ol_amount"));
 //					B = B +  row.getDouble("ol_amount");
+					B= row.getDouble("system.sum(ol_amount)");
 				}
 				
 				//get c_balance from customer before update
@@ -108,7 +110,8 @@ public class Delivery {
 				int c_delivery_cnt = 0;
 				for (Row row : results) {
 					c_delivery_cnt = row.getInt("c_delivery_cnt");
-					B.add(row.getDecimal("c_balance"));
+//					B.add(row.getDecimal("c_balance"));
+					B += row.getDouble("c_balance");
 				}
 				
 				//update the customer
@@ -125,8 +128,7 @@ public class Delivery {
 			
 //			connect = new CassandraConnect("localhost", 9042, "team3");
 //			Delivery d = new Delivery(connect);
-//			d.processDelivery(1, 2);
-//			
+//			d.processDelivery(1, 2);		
 //			connect.close();
 		}
 		
