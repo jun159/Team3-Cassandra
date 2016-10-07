@@ -24,14 +24,19 @@ export PATH=/temp/apache-maven-3.3.9/bin:$PATH
 // Insert steps here
 ```
 
-### 4. Run script
-Run `bash benchmark.sh 8 10`
-Run `bash benchmark.sh 8 10`
+### 4. Run bulkload script
+The bulkload.sh script requires 1 argument that represents the type of dataset (D8 or D40). </br>
+	a) To bulkload all D8 datasets into the database, run `bash bulkload.sh 8`. </br>
+	b) To bulkload all D40 datasets into the database, run `bash bulkload.sh 40`. </br>
 
-### 5. Stop server when not using
-Look for the pid in the output “XXXX pts/0    Sl     0:19 java”:
+### 5. Run benchmark script
+The benchmark.sh script requires 2 arguments that represents the type of dataset (D8 or D40) and number of clients. </br>
+	a) To benchmark D8 datasets with 10 clients, run `bash benchmark.sh 8 10`.</br>
+ 	b) To benchmark D40 datasets with 10 clients, run `bash benchmark.sh 40 10`.</br>
+
+### 6. Stop server when not using
 ```
-ps -ax | grep cassandra 
+ps -ax | grep cassandra //Look for the pid in the output “XXXX pts/0    Sl     0:19 java”
 kill XXXX
 ```
 
