@@ -54,7 +54,6 @@ public class MainDriver {
 	public void executeQueries() {
 		startTime = System.currentTimeMillis();	
 		String path = String.format(PATH_XACT, database, xactID);
-		System.out.println("PATH: " + path);
 		File file = new File(path);
 		
 		try {
