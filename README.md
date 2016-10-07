@@ -1,7 +1,7 @@
 # Team3-Cassandra
 
 ## Introduction
-Cassandra benchmarking measures the performance of different data modeling with different set of nodes and clients. With comparison of different data modeling, this allows us to understand the most optimized database schema design for Cassandra.
+Cassandra benchmarking measures the performance of different data modeling with different set of nodes and clients. With comparison of different data modeling, this allows us to find out the optimized database schema design for Cassandra.
 
 ## Instructions
 ### 1. Install Datastax(>=3.9.0)
