@@ -172,8 +172,8 @@ public class MainDriver {
 		long totalTime = (endTime - startTime) / 1000;
 		long throughput = numTransactions / totalTime;
 		System.out.println(MESSAGE_XACT_SIZE + numTransactions);
-		System.out.println(MESSAGE_ELAPSED_TIME + totalTime);
-		System.out.println(MESSAGE_THROUGHPUT + throughput);
+		System.out.println(MESSAGE_ELAPSED_TIME + totalTime + " s");
+		System.out.println(MESSAGE_THROUGHPUT + throughput + "/s");
 	}
 	
 	public static void main(String[] args) {
