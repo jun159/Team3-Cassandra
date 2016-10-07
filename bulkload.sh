@@ -70,12 +70,12 @@ cd
 # Bulk load data
 echo -ne "\nLoading warehouse, district, customer, order and orderline data into Cassandra..."
 cd /temp/datastax-ddc-3.9.0/bin
-./cqlsh -f ~/git/Team3-Cassandra/schema.cql
+./cqlsh -f ~/Team3-Cassandra/schema.cql
 if [ $1 == 8 ]
 then
-    ./cqlsh -f ~/git/Team3-Cassandra/schemascript8.cql
+    ./cqlsh -f ~/Team3-Cassandra/schemascript8.cql
 else
-    ./cqlsh -f ~/git/Team3-Cassandra/schemascript40.cql
+    ./cqlsh -f ~/Team3-Cassandra/schemascript40.cql
 fi
 
 cd ~/Team3-Cassandra
