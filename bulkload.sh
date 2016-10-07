@@ -60,7 +60,7 @@ then
         unzip D40-data.zip &>/dev/null
         wget http://www.comp.nus.edu.sg/~cs4224/D40-xact-revised-b.zip
         unzip D40-xact-revised-b.zip
-        mv D40-xact-revised-b D8-xact
+        mv D40-xact-revised-b D40-xact
         echo "D40-data download completed"
     fi
 fi
