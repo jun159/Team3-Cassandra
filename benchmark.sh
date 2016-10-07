@@ -21,7 +21,7 @@ echo -ne "Execute $2 clients in background..."
 ONE=1
 let "NUM_CLIENTS = $2 - $ONE"
 
-for i in `seq $2`; do
+for i in `seq 0 $NUM_CLIENTS`; do
 mvn -q exec:java -Dexec.mainClass="app.MainDriver" -Dexec.args="$1 $i" 1> log/output$i.log 2> log/error$i.log &
 done
 wait
