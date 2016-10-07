@@ -1,6 +1,6 @@
 # Team3-Cassandra
 
-## Intro
+## Introduction
 Cassandra benchmarking measures the performance of different data modeling with different set of nodes and clients. With comparison of different data modeling, this allows us to understand the most optimized database schema design for Cassandra.
 
 ## Instructions
@@ -15,14 +15,20 @@ export PATH=/temp/apache-maven-3.3.9/bin:$PATH
 ```
 
 ### 2. Install Maven(>=3.9.9)
+```
+// Insert steps here
+```
 
 ### 3. Configure cassandra server
+```
+// Insert steps here
+```
 
 ### 4. Run script
 Run `bash benchmark.sh 8 10`
 Run `bash benchmark.sh 8 10`
 
-### 5.Remember to stop server when not using
+### 5. Stop server when not using
 Look for the pid in the output “XXXX pts/0    Sl     0:19 java”:
 ```
 ps -ax | grep cassandra 
