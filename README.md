@@ -25,13 +25,13 @@ export PATH=/temp/apache-maven-3.3.9/bin:$PATH
 
 ### 4. Bulkload data
 The bulkload.sh script requires 1 argument that represents the type of dataset (D8 or D40). </br>
-	a) To bulkload all D8 datasets into the database, run `bash bulkload.sh 8`. </br>
-	b) To bulkload all D40 datasets into the database, run `bash bulkload.sh 40`. </br>
+⋅⋅⋅a) To bulkload all D8 datasets into the database, run `bash bulkload.sh 8`. </br>
+⋅⋅⋅b) To bulkload all D40 datasets into the database, run `bash bulkload.sh 40`. </br>
 
 ### 5. Run benchmark
 The benchmark.sh script requires 2 arguments that represents the type of dataset (D8 or D40) and number of clients. </br>
-	a) To benchmark D8 datasets with 10 clients, run `bash benchmark.sh 8 10`.</br>
- 	b) To benchmark D40 datasets with 10 clients, run `bash benchmark.sh 40 10`.</br>
+⋅⋅⋅a) To benchmark D8 datasets with 10 clients, run `bash benchmark.sh 8 10`.</br>
+⋅⋅⋅b) To benchmark D40 datasets with 10 clients, run `bash benchmark.sh 40 10`.</br>
 
 ### 6. Stop server when not using
 ```
