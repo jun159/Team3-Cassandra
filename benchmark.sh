@@ -2,11 +2,11 @@
 
 # The following script allows user to benchmark Cassandra performance
 # Enter 4 arguments to select the data to benchmark:
-# /benchmark.sh arg1 arg2 arg3 arg4
+# /benchmark.sh arg0 arg1
 
 # The arguments can have the following values:
-#		arg1: Database - 8, 40
-#		arg2: Number of clients - 10, 20, 40
+#		arg0: Database - 8, 40
+#		arg1: Number of clients - 10, 20, 40
 
 # Run app
 echo -ne "Compiling project..."
@@ -22,5 +22,3 @@ for i in `seq $2`; do
 done
 wait
 echo "completed"
-
-# Benchmark
