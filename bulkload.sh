@@ -2,7 +2,10 @@
 
 # The following script allows user to retrieve data and transactions
 # and load the data into the database by running the following:
-# bash bulkload.sh
+# bash bulkload.sh 8
+
+# The argument can have the following values:
+#		arg1: Database - 8, 40
 
 # Conditions:
 #       Project (Team3-Cassandra) is in home directory
