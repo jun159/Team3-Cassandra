@@ -56,7 +56,6 @@ public class Denormalize {
 			System.out.println("reading file Error '" + fileName + "'");
 		}
 		cluster.close();
-		System.out.println("success");
 		
 	}
 	
