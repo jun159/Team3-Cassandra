@@ -37,7 +37,6 @@ public class Denormalize {
 			FileReader fileReader = new FileReader(fileName);
 			bufferRead = new BufferedReader(fileReader);
 
-            System.out.print("Loading items data...");
 			while ((line = bufferRead.readLine()) != null) {
 				String[] content = line.split(",");
 				
