@@ -74,16 +74,16 @@ cd /temp/datastax-ddc-3.9.0/bin
 
 if [ $2 == 1 ]
 then
-    ./cqlsh -f ~/Team3-Cassandra/schema1.cql
+    ./cqlsh -f ~/temp/Team3-Cassandra/schema1.cql
 else
-    ./cqlsh -f ~/Team3-Cassandra/schema3.cql
+    ./cqlsh -f ~/temp/Team3-Cassandra/schema3.cql
 fi
 
 if [ $1 == 8 ]
 then
-    ./cqlsh -f ~/Team3-Cassandra/schemascript8.cql
+    ./cqlsh -f ~/temp/Team3-Cassandra/schemascript8.cql
 else
-    ./cqlsh -f ~/Team3-Cassandra/schemascript40.cql
+    ./cqlsh -f ~/temp/Team3-Cassandra/schemascript40.cql
 fi
 
 cd ~/Team3-Cassandra
