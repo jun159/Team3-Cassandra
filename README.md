@@ -27,7 +27,7 @@ Edit the settings in 'cassandra.yaml' file:
 
 1) seeds: If you are running three nodes, add the IP addresses of the three nodes.
 
-<img src="https://github.com/jun159/Team3-Cassandra/blob/master/IMG%20CS4224.jpg">
+<img src="https://github.com/jun159/Team3-Cassandra/blob/master/IMG%20CS4224.jpg" height ="200">
     
 2) Listen: Add in the IP address of the current node in use.
 
