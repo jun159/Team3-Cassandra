@@ -31,6 +31,8 @@ Edit the settings in 'cassandra.yaml' file:
     
 2) Listen: Add in the IP address of the current node in use.
 
+<img src="https://github.com/jun159/Team3-Cassandra/blob/master/IMG%202%20CS4224.png" height ="200">
+
 Save the file and restart the cassandra server.
 
 ### 4. Bulkload data
