@@ -6,13 +6,14 @@ Cassandra benchmarking measures the performance of different data modeling with 
 ## Instructions
 ### 1. Install Datastax(>=3.9.0)
 ```
-cd /temp 
+cd /temp // Install in temp folder
 wget http://downloads.datastax.com/datastax-ddc/datastax-ddc-3.9.0-bin.tar.gz
 tar zxvf datastax-ddc-3.9.0-bin.tar.gz
 ```
 
 ### 2. Install Maven(>=3.3.9)
 ```
+cd /temp // Install in temp folder
 wget http://download.nus.edu.sg/mirror/apache/maven/maven-3/3.3.9/binaries/apache-maven-3.3.9-bin.tar.gz
 tar xzvf apache-maven-3.3.9-bin.tar.gz
 export PATH=/temp/apache-maven-3.3.9/bin:$PATH
@@ -35,22 +36,28 @@ Edit the settings in 'cassandra.yaml' file:
 
 Save the file and restart the cassandra server.
 
-### 4. Bulkload data
-The bulkload.sh script requires 1 argument that represents the type of dataset (D8 or D40). </br>
-     a) To bulkload all D8 datasets into the database, run `bash bulkload.sh 8`. </br>
-     b) To bulkload all D40 datasets into the database, run `bash bulkload.sh 40`. </br>
+### 4. Download project
+Before running the scripts, make sure that the project is in the home folder. Change directory to the project folder to prepare for benchmarking.
+```
+cd Team3-Cassandra 
+```
 
-### 5. Run benchmark
-The benchmark.sh script requires 2 arguments that represents the type of dataset (D8 or D40) and number of clients. </br>
-     a) To benchmark D8 datasets with 10 clients, run `bash benchmark.sh 8 10`.</br>
-     b) To benchmark D40 datasets with 10 clients, run `bash benchmark.sh 40 10`.</br>
+### 5. Bulkload data
+The benchmark.sh script requires 2 arguments that represents the type of dataset (D8 or D40) and number of clients. 
+a) To bulkload all D8 datasets into the database, run `bash bulkload.sh 8`. 
+b) To bulkload all D40 datasets into the database, run `bash bulkload.sh 40`. 
 
-### 6. Stop server when not using
+### 6. Run benchmark
+The benchmark.sh script requires 2 arguments that represents the type of dataset (D8 or D40) and number of clients.
+a) To benchmark D8 datasets with 10 clients, run `bash benchmark.sh 8 10`.
+b) To benchmark D40 datasets with 10 clients, run `bash benchmark.sh 40 10`.
+
+### 7. Stop server when not using
 ```
 ps -ax | grep cassandra //Look for the pid in the output “XXXX pts/0    Sl     0:19 java”
 kill XXXX
 ```
 
 ## References
-https://maven.apache.org/install.html </br>
-http://www.mkyong.com/maven/install-maven-on-mac-osx/ </br>
+https://maven.apache.org/install.html
+http://www.mkyong.com/maven/install-maven-on-mac-osx/ 
