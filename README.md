@@ -25,7 +25,6 @@ vim cassandra.yaml
 ```
 Edit the settings in 'cassandra.yaml' file:</br>
      1) seeds: If you are running three nodes, add the IP addresses of the three nodes.</br>
-     <br>
      <img align="left" src="https://github.com/jun159/Team3-Cassandra/blob/master/IMG%20CS4224.jpg" width="400"></br>
      2) Listen: Add in the IP address of the current node in use.</br>
 Save the file and restart the cassandra server.</br>
