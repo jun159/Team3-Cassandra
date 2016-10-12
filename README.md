@@ -20,8 +20,13 @@ export PATH=/temp/apache-maven-3.3.9/bin:$PATH
 
 ### 3. Configure cassandra server
 ```
-// Insert steps here
+cd /temp/datastax-ddc-3.9.0/config
+vim cassandra.yaml
 ```
+Edit the settings in cassandra.yaml file:
+1) Seeds: If you are running three nodes, add in the IP address of the three nodes.
+2) Listen: Add in the IP address of the current node in use.
+Save the file and restart the cassandra server.
 
 ### 4. Bulkload data
 The bulkload.sh script requires 1 argument that represents the type of dataset (D8 or D40). </br>
