@@ -4,8 +4,9 @@
 # and load the data into the database by running the following:
 # bash bulkload.sh arg0
 
-# The argument can have the following values:
+# The arguments can have the following values:
 #		arg0: Database - 8, 40
+#		arg1: Number of clients - 10, 20, 40
 
 # Conditions:
 #       Project (Team3-Cassandra) is in home directory
@@ -70,7 +71,14 @@ cd
 # Bulk load data
 echo -ne "\nLoading warehouse, district, customer, order, orderline and stock data into Cassandra..."
 cd /temp/datastax-ddc-3.9.0/bin
-./cqlsh -f ~/Team3-Cassandra/schema.cql
+
+if [ $2 == 1 ]
+then
+    ./cqlsh -f ~/Team3-Cassandra/schema1.cql
+else
+    ./cqlsh -f ~/Team3-Cassandra/schema3.cql
+fi
+
 if [ $1 == 8 ]
 then
     ./cqlsh -f ~/Team3-Cassandra/schemascript8.cql
