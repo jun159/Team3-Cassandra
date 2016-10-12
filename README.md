@@ -18,14 +18,14 @@ tar xzvf apache-maven-3.3.9-bin.tar.gz
 export PATH=/temp/apache-maven-3.3.9/bin:$PATH
 ```
 
-### 3. Configure cassandra server (to run three nodes)
+### 3. Configuration for three nodes
 ```
 cd /temp/datastax-ddc-3.9.0/conf
 vim cassandra.yaml
 ```
 Edit the settings in 'cassandra.yaml' file:
 
-1) seeds: If you are running three nodes, add the IP addresses of the three nodes.
+1) seeds: Add the IP addresses of the three nodes.
 
 <img src="https://github.com/jun159/Team3-Cassandra/blob/master/IMG%20CS4224.jpg" height ="200">
     
