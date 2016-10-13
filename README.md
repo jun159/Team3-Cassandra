@@ -45,12 +45,18 @@ cd Team3-Cassandra
 ### 5. Bulkload data
 The benchmark.sh script requires 2 arguments that represents the type of dataset (D8 or D40) and number of clients. </br>
 a) To bulkload all D8 datasets into the database with 1 node, run `bash bulkload.sh 8 1`. </br>
-b) To bulkload all D40 datasets into the database with 3 nodes, run `bash bulkload.sh 40 3`. 
+b) To bulkload all D8 datasets into the database with 3 nodes, run `bash bulkload.sh 8 3`. </br>
+c) To bulkload all D40 datasets into the database with 1 node, run `bash bulkload.sh 40 1`. </br>
+d) To bulkload all D40 datasets into the database with 3 nodes, run `bash bulkload.sh 40 3`. 
 
 ### 6. Run benchmark
 The benchmark.sh script requires 2 arguments that represents the type of dataset (D8 or D40) and number of clients. </br>
 a) To benchmark D8 datasets with 10 clients, run `bash benchmark.sh 8 10`.</br>
-b) To benchmark D40 datasets with 10 clients, run `bash benchmark.sh 40 10`.
+b) To benchmark D8 datasets with 20 clients, run `bash benchmark.sh 8 20`.</br>
+c) To benchmark D8 datasets with 40 clients, run `bash benchmark.sh 8 40`.</br>
+d) To benchmark D40 datasets with 10 clients, run `bash benchmark.sh 40 10`.</br>
+e) To benchmark D40 datasets with 20 clients, run `bash benchmark.sh 40 20`.</br>
+f) To benchmark D40 datasets with 40 clients, run `bash benchmark.sh 40 40`.</br>
 
 ### 7. Stop server when not using
 ```
