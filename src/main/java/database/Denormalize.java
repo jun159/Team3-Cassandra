@@ -13,7 +13,7 @@ import com.datastax.driver.core.Session;
 
 public class Denormalize {
 	private static String FILEPATH = "./data/D%1$s-data";
-	private static String NODEIP = "127.0.0.1";
+	private static String NODEIP = "localhost";
 	private String path;
 	private int database;
 	
@@ -42,18 +42,29 @@ public class Denormalize {
 			while ((line = bufferRead.readLine()) != null) {
 				String[] content = line.split(",");
 				
-				for(int i = 1; i <= database; i++) {
+				if(database == 8) {
 					statement = "Update team3.StockItem SET "+
-								"I_NAME = '" + content[1]+ "', "+
-								"I_PRICE = " + content[2]+ ", "+
-								"I_IM_ID = " + content[3]+ ", "+
-								"I_DATA = '" + content[4]+ "' "+
-								"where S_W_ID = " + database + " AND S_I_ID = " + content[0]+ "; ";	
-					session.execute(statement);	
+						"I_NAME = '" + content[1]+ "', "+
+						"I_PRICE = " + content[2]+ ", "+
+						"I_IM_ID = " + content[3]+ ", "+
+						"I_DATA = '" + content[4]+ "' "+
+						"where S_W_ID in (1,2,3,4,5,6,7,8) AND S_I_ID = " + content[0]+ "; ";
+					
+					session.execute(statement);
+				} else if(database == 40) {
+					statement = "Update team3.StockItem SET "+
+						"I_NAME = '" + content[1]+ "', "+
+						"I_PRICE = " + content[2]+ ", "+
+						"I_IM_ID = " + content[3]+ ", "+
+						"I_DATA = '" + content[4]+ "' "+
+						"where S_W_ID in (1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40) AND S_I_ID = " + content[0]+ "; ";
+				 
+					session.execute(statement);   
 				}
 				
 				System.out.print(String.format("Rows imported from item: %1$s\r", current++));
 			}
+			
 			bufferRead.close();  //must be closed
 		} catch (FileNotFoundException ex) {
 			System.out.println("Could not find:  '" + fileName + "'");
