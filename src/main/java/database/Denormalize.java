@@ -15,8 +15,10 @@ public class Denormalize {
 	private static String FILEPATH = "./data/D%1$s-data";
 	private static String NODEIP = "127.0.0.1";
 	private String path;
+	private int database;
 	
 	public Denormalize(String dbType) {
+		this.database = Integer.parseInt(dbType);
 		this.path = String.format(FILEPATH, dbType);
 	}
 	
@@ -40,13 +42,16 @@ public class Denormalize {
 			while ((line = bufferRead.readLine()) != null) {
 				String[] content = line.split(",");
 				
-				statement = "Update team3.StockItem SET "+
-							"I_NAME = '" + content[1]+ "', "+
-							"I_PRICE = " + content[2]+ ", "+
-							"I_IM_ID = " + content[3]+ ", "+
-							"I_DATA = '" + content[4]+ "' "+
-							"where S_W_ID in (1,2,3,4,5,6,7,8) AND S_I_ID = " + content[0]+ "; ";	
-				session.execute(statement);
+				for(int i = 1; i <= database; i++) {
+					statement = "Update team3.StockItem SET "+
+								"I_NAME = '" + content[1]+ "', "+
+								"I_PRICE = " + content[2]+ ", "+
+								"I_IM_ID = " + content[3]+ ", "+
+								"I_DATA = '" + content[4]+ "' "+
+								"where S_W_ID = " + database + " AND S_I_ID = " + content[0]+ "; ";	
+					session.execute(statement);	
+				}
+				
 				System.out.print(String.format("Rows imported from item: %1$s\r", current++));
 			}
 			bufferRead.close();  //must be closed
